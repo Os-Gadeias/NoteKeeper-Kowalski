@@ -13,6 +13,8 @@ using NoteKeeper.Infraestrutura.Compartilhado.Orm;
 
 var builder = WebApplication.CreateBuilder(args);
 
+const string CORS = "Angular";
+
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddScoped<IEmissorTokens, JwtTokenGenerator>();
@@ -71,6 +73,16 @@ builder.Services
         .RequireAuthenticatedUser()
         .Build());
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(CORS, policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers(options =>
     options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
@@ -102,6 +114,8 @@ if (app.Environment.IsDevelopment())
         db.Database.Migrate();
     }
 }
+
+app.UseCors(CORS);
 
 app.UseExceptionHandler(error => error.Run(async context =>
 {
