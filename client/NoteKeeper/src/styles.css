@@ -6,6 +6,8 @@
 
 @import 'tailwindcss';
 
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
 /* =========================================
    NOTES APP - DARK THEME
    Inspired by Excalidraw
