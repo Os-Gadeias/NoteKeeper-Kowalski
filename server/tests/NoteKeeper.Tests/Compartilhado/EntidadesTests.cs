@@ -13,7 +13,7 @@ public sealed class EntidadesTests
         var usuarioId = Guid.NewGuid();
 
         // Act
-        var categoria = new Categoria(usuarioId, "  Trabalho  ");
+        var categoria = new Categoria(usuarioId, "  Trabalho  ", "bi bi-tag");
 
         // Assert
         Assert.Equal("Trabalho", categoria.Titulo);
@@ -30,7 +30,7 @@ public sealed class EntidadesTests
         var usuarioId = Guid.NewGuid();
 
         // Act
-        var categoria = new Categoria(usuarioId, titulo);
+        var categoria = new Categoria(usuarioId, titulo, "bi bi-tag");
 
         // Assert
         Assert.NotEmpty(categoria.Validar());
@@ -77,4 +77,51 @@ public sealed class EntidadesTests
         Assert.Equal("Minha Nota", nota.Titulo);
         Assert.Equal("MINHA NOTA", nota.TituloNormalizado);
     }
+
+    [Fact]
+    public void Categoria_AplicaTrimAoIconeEPermiteAlteracao()
+    {
+        // Arrange
+        var categoria = new Categoria(Guid.NewGuid(), "Trabalho", "  bi bi-tag  ");
+        Assert.Equal("bi bi-tag", categoria.Icone);
+
+        // Act
+        categoria.AlterarIcone("  bi bi-person  ");
+
+        // Assert
+        Assert.Equal("bi bi-person", categoria.Icone);
+        Assert.Empty(categoria.Validar());
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Categoria_RejeitaIconeVazio(string? icone)
+    {
+        // Arrange
+        var usuarioId = Guid.NewGuid();
+
+        // Act
+        var categoria = new Categoria(usuarioId, "Trabalho", icone!);
+
+        // Assert
+        Assert.Contains(categoria.Validar(), erro => erro.Campo == "icone");
+    }
+
+    [Theory]
+    [InlineData(100, true)]
+    [InlineData(101, false)]
+    public void Categoria_ValidaLimiteDoIcone(int tamanho, bool valido)
+    {
+        // Arrange
+        var icone = new string('a', tamanho);
+
+        // Act
+        var categoria = new Categoria(Guid.NewGuid(), "Trabalho", icone);
+
+        // Assert
+        Assert.Equal(valido, categoria.Validar().Count == 0);
+    }
+
 }
