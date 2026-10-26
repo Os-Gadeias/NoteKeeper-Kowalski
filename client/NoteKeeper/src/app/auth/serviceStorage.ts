@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 type AuthStorageKey = 'token' | 'username';
 
@@ -7,8 +7,16 @@ type AuthStorageKey = 'token' | 'username';
 })
 
 export class ServiceStorage {
+  private readonly _token = signal<string | null>(null);
+  private readonly _username = signal<string | null>(null);
+
+  readonly token = this._token.asReadonly();
+  readonly username = this._username.asReadonly();
+
   constructor() {
     if (typeof window !== 'undefined') {
+      this._token.set(this.get('token'));
+      this._username.set(this.get('username'));
       window.localStorage.removeItem('token');
       window.localStorage.removeItem('username');
     }
@@ -21,6 +29,7 @@ export class ServiceStorage {
     }
 
     this.getStorage().setItem(chave, valorNormalizado);
+    this.updateState(chave, valorNormalizado);
   }
 
   get(chave: AuthStorageKey): string | null {
@@ -35,6 +44,15 @@ export class ServiceStorage {
 
   remove(chave: AuthStorageKey): void {
     this.getStorage().removeItem(chave);
+    this.updateState(chave, null);
+  }
+
+  private updateState(chave: AuthStorageKey, valor: string | null): void {
+    if (chave === 'token') {
+      this._token.set(valor);
+    } else {
+      this._username.set(valor);
+    }
   }
 
   clear(): void {

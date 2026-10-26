@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 import { ServiceStorage } from './serviceStorage';
@@ -13,19 +13,14 @@ export class ProvideUser {
 
   constructor(protected serviceAuth: ServiceAuth) {}
 
-  private readonly _username = signal<string | null>(this.storage.get('username'));
-
-  readonly username = this._username.asReadonly();
+  readonly username = this.storage.username;
 
   readonly isLoggedIn = computed(
-    () => this._username() !== null && this.storage.get('token') !== null,
+    () => this.username() !== null && this.storage.token() !== null,
   );
 
   login(token: string, username: string): void {
-    this.storage.save('token', token);
-    this.storage.save('username', username);
-
-    this._username.set(username);
+    this.storage.saveAuth(token, username);
   }
 
   logout(): void {
@@ -41,7 +36,6 @@ export class ProvideUser {
 
   private finalizarLogoutLocal(): void {
     this.storage.clear();
-    this._username.set(null);
     void this.router.navigate(['/login']);
   }
 }
