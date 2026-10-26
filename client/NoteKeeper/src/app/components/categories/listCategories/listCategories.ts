@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 interface Category {
   id: string;
@@ -8,7 +9,7 @@ interface Category {
 @Component({
   selector: 'app-listCourse',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './listCategories.html',
 })
 export class ListCategories {

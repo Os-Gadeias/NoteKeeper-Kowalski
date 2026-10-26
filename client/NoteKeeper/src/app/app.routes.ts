@@ -21,4 +21,12 @@ export const routes: Routes = [
         (component) => component.ListCategories,
       ),
   },
+  { path: 'registerCategoryPage', redirectTo: 'category/register' },
+  {
+    path: 'category/register',
+    loadComponent: () =>
+      import('./components/categories/registerCategories/registerCategory').then(
+        (component) => component.RegisterCategorie,
+      ),
+  },
 ];
