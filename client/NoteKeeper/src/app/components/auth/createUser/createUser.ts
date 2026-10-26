@@ -66,6 +66,7 @@ export class CreateUser {
   });
   sendCreateUser(event: Event) {
     event.preventDefault();
+    this.errorMessage.set(null);
 
     const dados = this.modelForm;
 

@@ -17,7 +17,7 @@ interface LoginModel {
   templateUrl: './login.html',
 })
 export class Login {
-  protected errorMessage = '';
+  protected errorMessage = signal<string | null>(null);
 
   constructor(
     protected serviceAuth: ServiceAuth,
@@ -36,6 +36,7 @@ export class Login {
 
   sendLoginUser(event: Event) {
     event.preventDefault();
+    this.errorMessage.set(null);
 
     const dados = this.modelForm();
 
@@ -44,7 +45,7 @@ export class Login {
         this.router.navigate(['']);
       },
       error: (erro: HttpErrorResponse) => {
-        this.errorMessage = extractApiError(erro);
+        this.errorMessage.set(extractApiError(erro));
       },
     });
   }

@@ -32,7 +32,7 @@
       </p>
     </div>
 
-    @if (errorMessage) {
+    @if (errorMessage(); as message) {
       <!-- Error Message -->
       <div
         role="alert"
@@ -60,7 +60,7 @@
 
         <!-- Error Text -->
         <span class="font-body font-medium leading-relaxed">
-          {{ errorMessage }}
+          {{ message }}
         </span>
       </div>
     }
