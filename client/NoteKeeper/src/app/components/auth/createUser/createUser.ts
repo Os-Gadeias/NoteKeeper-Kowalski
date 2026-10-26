@@ -1,9 +1,18 @@
 import { Component, signal } from '@angular/core';
-import { email, form, minLength, pattern, required, validate } from '@angular/forms/signals';
+import {
+  email,
+  form,
+  minLength,
+  pattern,
+  required,
+  validate,
+  FormField,
+} from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
+import { ServiceAuth } from '../../../service/users/serviceAuth';
 
 interface CreateUserModel {
-  username: string;
+  nome: string;
   email: string;
   senha: string;
   confirmSenha: string;
@@ -12,19 +21,21 @@ interface CreateUserModel {
 @Component({
   selector: 'app-createUser',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FormField],
   templateUrl: './createUser.html',
 })
 export class CreateUser {
+  constructor(protected serviceAuth: ServiceAuth) {}
+
   protected modelForm = signal<CreateUserModel>({
-    username: '',
+    nome: '',
     email: '',
     senha: '',
     confirmSenha: '',
   });
 
   protected createUserModel = form(this.modelForm, (model) => {
-    required(model.username, { message: 'Username is required!' });
+    required(model.nome, { message: 'Username is required!' });
     required(model.email, { message: 'Email is required!' });
     required(model.senha, { message: 'Password is required!' });
     required(model.confirmSenha, { message: 'Confirm passowrd is required!' });
@@ -45,7 +56,18 @@ export class CreateUser {
       }
       return null;
     });
-
-    
   });
+  sendCreateUser(event: Event) {
+    event.preventDefault();
+
+    const dados = this.modelForm;
+
+    this.serviceAuth.register(dados()).subscribe({
+      next: (valor) => {
+        console.log(valor.email);
+        console.log(valor.nome);
+        console.log(valor.id);
+      },
+    });
+  }
 }
