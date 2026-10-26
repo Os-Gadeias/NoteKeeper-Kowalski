@@ -53,7 +53,7 @@
     <div class="flex items-center gap-3">
       <!-- Search -->
 
-      @if (provideUser.isLoggedIn) {
+      @if (provideUser.isLoggedIn()) {
         <!-- Create Note -->
         <button
           type="button"
@@ -75,15 +75,101 @@
 
           <span class="hidden sm:inline">New Note</span>
         </button>
+        <!-- User Dropdown -->
+        <div class="relative" (keydown.escape)="dropdownOpen.set(false)">
+          <!-- Dropdown Trigger -->
+          <button
+            type="button"
+            (click)="dropdownOpen.set(!dropdownOpen())"
+            [attr.aria-expanded]="dropdownOpen()"
+            aria-haspopup="true"
+            class="flex cursor-pointer items-center gap-3 rounded-button border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-text-primary transition-all duration-200 hover:border-border-hover hover:bg-surface-hover"
+          >
+            <!-- User Icon -->
+            <div
+              class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-muted text-primary"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21v-2a8 8 0 0 1 16 0v2" />
+              </svg>
+            </div>
 
+            <!-- Username -->
+            <span class="hidden max-w-32 truncate sm:block">
+              {{ provideUser.username() }}
+            </span>
+
+            <!-- Chevron -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-text-muted transition-transform duration-200"
+              [class.rotate-180]="dropdownOpen()"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+
+          <!-- Dropdown Menu -->
+          @if (dropdownOpen()) {
+            <div
+              class="absolute right-0 z-50 mt-2 w-52 overflow-hidden rounded-card border border-border bg-background-secondary p-2 shadow-card-hover"
+            >
+              <!-- User Information -->
+              <div class="border-b border-border px-3 py-3">
+                <p class="text-xs text-text-muted">Signed in as</p>
+
+                <p class="mt-1 truncate font-heading text-sm font-bold text-text-primary">
+                  {{ provideUser.username() }}
+                </p>
+              </div>
+
+              <!-- Logout -->
+              <button
+                type="button"
+                (click)="logout()"
+                class="mt-2 flex w-full cursor-pointer items-center gap-3 rounded-button px-3 py-2.5 text-left text-sm font-medium text-danger transition-colors duration-200 hover:bg-danger/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <path d="m16 17 5-5-5-5" />
+                  <path d="M21 12H9" />
+                </svg>
+
+                Sign Out
+              </button>
+            </div>
+          }
+        </div>
         <!-- User Avatar -->
-        <button
-          type="button"
-          aria-label="User profile"
-          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-primary/30 bg-primary-muted font-heading text-sm font-bold text-primary-light transition-colors hover:border-primary"
-        >
-          TK
-        </button>
       } @else {
         <a
           routerLink="/login"

@@ -29,7 +29,7 @@ export class ServiceAuth {
     return this.http.post<CreateUserResponse>(`${this.urlApi}/auth/cadastro`, createUser);
   }
 
-  logout() {
-    return this.http.post(`${this.urlApi}/auth/logout`, '');
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.urlApi}/auth/logout`, {});
   }
 }

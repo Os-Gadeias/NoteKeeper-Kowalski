@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProvideUser } from '../../../auth/provideUser';
 
@@ -9,5 +9,14 @@ import { ProvideUser } from '../../../auth/provideUser';
   templateUrl: './navbar.html',
 })
 export class Navbar {
-  protected readonly provideUser = Inject(ProvideUser);
+  constructor(protected provideUser: ProvideUser) {}
+
+  protected readonly dropdownOpen = signal(false);
+
+  // Mantenha a injeção existente do provideUser.
+
+  protected logout(): void {
+    this.dropdownOpen.set(false);
+    this.provideUser.logout();
+  }
 }

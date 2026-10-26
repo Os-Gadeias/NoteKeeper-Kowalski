@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 import { ServiceStorage } from './serviceStorage';
-import { ServiceLogout } from './serviceLogout';
+import { ServiceAuth } from '../service/users/serviceAuth';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,8 @@ import { ServiceLogout } from './serviceLogout';
 export class ProvideUser {
   private readonly storage = inject(ServiceStorage);
   private readonly router = inject(Router);
-  private readonly logoutService = inject(ServiceLogout);
+
+  constructor(protected serviceAuth: ServiceAuth) {}
 
   private readonly _username = signal<string | null>(this.storage.get('username'));
 
@@ -28,7 +29,7 @@ export class ProvideUser {
   }
 
   logout(): void {
-    this.logoutService
+    this.serviceAuth
       .logout()
       .pipe(finalize(() => this.finalizarLogoutLocal()))
       .subscribe({
