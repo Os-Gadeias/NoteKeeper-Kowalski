@@ -1,0 +1,154 @@
+<section class="flex min-h-[calc(100vh-72px)] items-center justify-center bg-background px-4 py-12">
+  <div class="w-full max-w-md rounded-card border border-border bg-surface p-8 shadow-card sm:p-10">
+    <!-- Header -->
+    <div class="mb-8 text-center">
+      <!-- Icon -->
+      <div
+        class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-muted"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-primary"
+        >
+          <rect x="4" y="3" width="16" height="18" rx="2" />
+          <path d="M8 8h8M8 12h8M8 16h5" />
+        </svg>
+      </div>
+
+      <h1 class="font-heading text-3xl font-extrabold text-text-primary">
+        Create your account<span class="text-primary">.</span>
+      </h1>
+
+      <p class="mt-3 font-body text-sm text-text-secondary">
+        Join Notely and keep your notes and reminders organized.
+      </p>
+    </div>
+
+    <!-- Register Form -->
+    <form class="flex flex-col gap-6">
+      <!-- Grid de Inputs -->
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <!-- Username -->
+        <div class="flex flex-col gap-2">
+          <label for="username" class="font-heading text-sm font-semibold text-text-primary">
+            Username
+          </label>
+
+          <input
+            id="username"
+            name="username"
+            type="text"
+            placeholder="Enter your username"
+            autocomplete="username"
+            required
+            class="w-full rounded-input border border-border bg-background-tertiary px-4 py-3 font-body text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="flex flex-col gap-2">
+          <label for="email" class="font-heading text-sm font-semibold text-text-primary">
+            Email address
+          </label>
+
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+            class="w-full rounded-input border border-border bg-background-tertiary px-4 py-3 font-body text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="flex flex-col gap-2">
+          <label for="password" class="font-heading text-sm font-semibold text-text-primary">
+            Password
+          </label>
+
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            required
+            minlength="8"
+            class="w-full rounded-input border border-border bg-background-tertiary px-4 py-3 font-body text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="flex flex-col gap-2">
+          <label for="confirmPassword" class="font-heading text-sm font-semibold text-text-primary">
+            Confirm Password
+          </label>
+
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirm your password"
+            autocomplete="new-password"
+            required
+            minlength="8"
+            class="w-full rounded-input border border-border bg-background-tertiary px-4 py-3 font-body text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-button bg-primary px-5 py-3 font-heading text-sm font-bold text-text-inverse shadow-primary transition-all duration-200 hover:bg-primary-hover hover:shadow-card-hover active:bg-primary-active"
+      >
+        Create Account
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="17"
+          height="17"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div class="my-7 flex items-center gap-4">
+      <div class="h-px flex-1 bg-border"></div>
+
+      <span class="text-xs text-text-muted"> Already have an account? </span>
+
+      <div class="h-px flex-1 bg-border"></div>
+    </div>
+
+    <!-- Login -->
+    <a
+      routerLink="/loginPage"
+      class="flex w-full items-center justify-center rounded-button border border-border bg-background-secondary px-5 py-3 font-heading text-sm font-semibold text-text-primary transition-all duration-200 hover:border-primary hover:bg-primary-muted hover:text-primary-light"
+    >
+      Sign In
+    </a>
+
+    <!-- Footer -->
+    <p class="mt-8 text-center text-xs text-text-muted">Your thoughts, organized in one place.</p>
+  </div>
+</section>

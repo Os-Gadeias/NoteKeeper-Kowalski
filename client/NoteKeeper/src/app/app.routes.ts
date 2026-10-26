@@ -1,9 +1,15 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: 'login', redirectTo: 'loginPage' },
+  { path: 'loginPage', redirectTo: 'login' },
   {
-    path: 'loginPage',
+    path: 'login',
     loadComponent: () => import('./components/login/login').then((component) => component.Login),
+  },
+  { path: 'createUserPage', redirectTo: 'createUser' },
+  {
+    path: 'createUser',
+    loadComponent: () =>
+      import('./components/createUser/createUser').then((component) => component.CreateUser),
   },
 ];
