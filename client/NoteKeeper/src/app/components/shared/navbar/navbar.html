@@ -28,22 +28,34 @@
     <!-- Navigation Links -->
     <div class="hidden items-center gap-2 md:flex">
       <a
-        href="#"
-        class="rounded-button bg-surface-active px-4 py-2 text-sm font-semibold text-primary transition-colors"
+        routerLink="/notes"
+        routerLinkActive="bg-surface-active text-primary"
+        #notesActive="routerLinkActive"
+        [class.text-text-secondary]="!notesActive.isActive"
+        ariaCurrentWhenActive="page"
+        class="rounded-button px-4 py-2 text-sm font-semibold transition-colors"
       >
         My Notes
       </a>
 
       <a
-        href="#"
-        class="rounded-button px-4 py-2 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"
+        routerLink="/reminders"
+        routerLinkActive="bg-surface-active text-primary"
+        #remindersActive="routerLinkActive"
+        [class.text-text-secondary]="!remindersActive.isActive"
+        ariaCurrentWhenActive="page"
+        class="rounded-button px-4 py-2 text-sm font-medium transition-colors"
       >
         Reminders
       </a>
 
       <a
-        href="#"
-        class="rounded-button px-4 py-2 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"
+        routerLink="/categories"
+        routerLinkActive="bg-surface-active text-primary"
+        #categoriesActive="routerLinkActive"
+        [class.text-text-secondary]="!categoriesActive.isActive"
+        ariaCurrentWhenActive="page"
+        class="rounded-button px-4 py-2 text-sm font-medium transition-colors"
       >
         Categories
       </a>
@@ -166,22 +178,34 @@
   <!-- Mobile Navigation -->
   <div class="flex items-center justify-center gap-2 border-t border-border px-4 py-2 md:hidden">
     <a
-      href="#"
-      class="rounded-button bg-surface-active px-4 py-2 text-xs font-semibold text-primary"
+      routerLink="/notes"
+      routerLinkActive="bg-surface-active text-primary"
+      #mobileNotesActive="routerLinkActive"
+      [class.text-text-secondary]="!mobileNotesActive.isActive"
+      ariaCurrentWhenActive="page"
+      class="rounded-button px-4 py-2 text-xs font-semibold"
     >
       My Notes
     </a>
 
     <a
-      href="#"
-      class="rounded-button px-4 py-2 text-xs font-medium text-text-secondary hover:text-primary"
+      routerLink="/reminders"
+      routerLinkActive="bg-surface-active text-primary"
+      #mobileRemindersActive="routerLinkActive"
+      [class.text-text-secondary]="!mobileRemindersActive.isActive"
+      ariaCurrentWhenActive="page"
+      class="rounded-button px-4 py-2 text-xs font-medium"
     >
       Reminders
     </a>
 
     <a
-      href="#"
-      class="rounded-button px-4 py-2 text-xs font-medium text-text-secondary hover:text-primary"
+      routerLink="/categories"
+      routerLinkActive="bg-surface-active text-primary"
+      #mobileCategoriesActive="routerLinkActive"
+      [class.text-text-secondary]="!mobileCategoriesActive.isActive"
+      ariaCurrentWhenActive="page"
+      class="rounded-button px-4 py-2 text-xs font-medium"
     >
       Categories
     </a>
