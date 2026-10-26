@@ -71,7 +71,9 @@ export class CreateUser {
     const dados = this.modelForm;
 
     this.serviceAuth.register(dados()).subscribe({
-      next: () => {},
+      next: () => {
+        this.router.navigate(['/']);
+      },
       error: (erro: HttpErrorResponse) => {
         this.errorMessage.set(extractApiError(erro));
       },

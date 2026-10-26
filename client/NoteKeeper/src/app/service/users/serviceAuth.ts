@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { URL_API } from '../../auth/auth.tokens';
-import { Observable, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { CreateUserRequest, CreateUserResponse, LoginRequest, LoginResponse } from './models';
 import { HttpClient } from '@angular/common/http';
 import { ServiceStorage } from '../../auth/serviceStorage';
@@ -25,8 +25,16 @@ export class ServiceAuth {
     );
   }
 
-  register(createUser: CreateUserRequest): Observable<CreateUserResponse> {
-    return this.http.post<CreateUserResponse>(`${this.urlApi}/auth/cadastro`, createUser);
+  //faz o registro do usuario e se acaso for sucedido, chama o metodo login e passa os parametros agora cadastrados pra ele
+  register(createUser: CreateUserRequest): Observable<LoginResponse> {
+    return this.http.post<CreateUserResponse>(`${this.urlApi}/auth/cadastro`, createUser).pipe(
+      switchMap(() => {
+        return this.login({
+          email: createUser.email,
+          senha: createUser.senha,
+        });
+      }),
+    );
   }
 
   logout(): Observable<void> {
