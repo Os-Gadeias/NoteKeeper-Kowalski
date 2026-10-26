@@ -8,8 +8,10 @@ import {
   validate,
   FormField,
 } from '@angular/forms/signals';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ServiceAuth } from '../../../service/users/serviceAuth';
+import { extractApiError } from '../../../../api/extractApiError';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface CreateUserModel {
   nome: string;
@@ -25,7 +27,12 @@ interface CreateUserModel {
   templateUrl: './createUser.html',
 })
 export class CreateUser {
-  constructor(protected serviceAuth: ServiceAuth) {}
+  constructor(
+    protected serviceAuth: ServiceAuth,
+    protected router: Router,
+  ) {}
+
+  protected errorMessage = signal<string | null>(null);
 
   protected modelForm = signal<CreateUserModel>({
     nome: '',
@@ -50,7 +57,7 @@ export class CreateUser {
 
       if (senha !== senhaConfirmada) {
         return {
-          kind: 'senhaConfirmada',
+          kind: 'senha',
           message: 'The passwords dont match!',
         };
       }
@@ -63,10 +70,9 @@ export class CreateUser {
     const dados = this.modelForm;
 
     this.serviceAuth.register(dados()).subscribe({
-      next: (valor) => {
-        console.log(valor.email);
-        console.log(valor.nome);
-        console.log(valor.id);
+      next: () => {},
+      error: (erro: HttpErrorResponse) => {
+        this.errorMessage.set(extractApiError(erro));
       },
     });
   }

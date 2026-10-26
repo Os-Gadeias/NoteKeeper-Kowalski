@@ -7,7 +7,7 @@ export interface LoginResponse {
   usuarioId: string;
   nome: string;
   email: string;
-  acessToken: string;
+  accessToken: string;
   dataExpiracaoEmUtc: string;
 }
 

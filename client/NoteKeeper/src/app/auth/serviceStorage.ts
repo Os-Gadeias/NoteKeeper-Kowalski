@@ -5,6 +5,7 @@ type AuthStorageKey = 'token' | 'username';
 @Injectable({
   providedIn: 'root',
 })
+
 export class ServiceStorage {
   constructor() {
     if (typeof window !== 'undefined') {
@@ -47,5 +48,9 @@ export class ServiceStorage {
     }
 
     return window.sessionStorage;
+  }
+  saveAuth(token: string, username: string): void {
+    this.save('token', token);
+    this.save('username', username);
   }
 }

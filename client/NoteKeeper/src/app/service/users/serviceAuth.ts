@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { URL_API } from '../../auth/auth.tokens';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { CreateUserRequest, CreateUserResponse, LoginRequest, LoginResponse } from './models';
 import { HttpClient } from '@angular/common/http';
+import { ServiceStorage } from '../../auth/serviceStorage';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +11,18 @@ import { HttpClient } from '@angular/common/http';
 export class ServiceAuth {
   private readonly urlApi = inject(URL_API);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private serviceStorage: ServiceStorage,
+  ) {}
 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.urlApi}/auth/login`, loginRequest);
+    return this.http.post<LoginResponse>(`${this.urlApi}/auth/login`, loginRequest).pipe(
+      tap((value) => {
+        //tap nao muda o valor do retorno da funcao
+        this.serviceStorage.saveAuth(value.accessToken, value.nome);
+      }),
+    );
   }
 
   register(createUser: CreateUserRequest): Observable<CreateUserResponse> {

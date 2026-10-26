@@ -1,7 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { form, required, FormField } from '@angular/forms/signals';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ServiceAuth } from '../../../service/users/serviceAuth';
+import { HttpErrorResponse } from '@angular/common/http';
+import { extractApiError } from '../../../../api/extractApiError';
 
 interface LoginModel {
   email: string;
@@ -15,9 +17,12 @@ interface LoginModel {
   templateUrl: './login.html',
 })
 export class Login {
-  // errorMessage: '';
+  protected errorMessage = '';
 
-  constructor(protected serviceAuth: ServiceAuth) {}
+  constructor(
+    protected serviceAuth: ServiceAuth,
+    protected router: Router,
+  ) {}
 
   protected modelForm = signal<LoginModel>({
     email: '',
@@ -35,8 +40,11 @@ export class Login {
     const dados = this.modelForm();
 
     this.serviceAuth.login(dados).subscribe({
-      next: (result) => {
-        console.log(result.acessToken);
+      next: () => {
+        this.router.navigate(['']);
+      },
+      error: (erro: HttpErrorResponse) => {
+        this.errorMessage = extractApiError(erro);
       },
     });
   }
