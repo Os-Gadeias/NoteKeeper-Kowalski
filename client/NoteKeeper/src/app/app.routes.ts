@@ -54,4 +54,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/notes/listNotes/listNotes').then((component) => component.ListNotes),
   },
+  { path: 'registerNotesPage', redirectTo: 'notes/register' },
+  {
+    path: 'notes/register',
+    loadComponent: () =>
+      import('./components/notes/registerNote/registerNote').then(
+        (component) => component.RegisterNotes,
+      ),
+  },
 ];

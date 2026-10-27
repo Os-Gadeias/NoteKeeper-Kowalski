@@ -6,7 +6,7 @@ export interface CategoryViewModel {
   icone: string;
 }
 
-export function toViewModel(model: ListCategoriesResponse[]): CategoryViewModel[] {
+export function toViewModelCategory(model: ListCategoriesResponse[]): CategoryViewModel[] {
   return model.map((category) => ({
     id: category.id,
     titulo: category.titulo,

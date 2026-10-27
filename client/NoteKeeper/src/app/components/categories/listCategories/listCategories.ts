@@ -4,7 +4,7 @@ import { ServiceCategories } from '../../../service/categories/serviceCategories
 import { map } from 'rxjs';
 import { ListCategoriesResponse } from '../../../service/categories/models';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { toViewModel } from '../../util';
+import { toViewModelCategory } from '../../util';
 
 @Component({
   selector: 'app-listCourse',
@@ -16,6 +16,8 @@ export class ListCategories {
   protected serviceCategories = inject(ServiceCategories);
 
   protected readonly categories = toSignal(
-    this.serviceCategories.list().pipe(map((list: ListCategoriesResponse[]) => toViewModel(list))),
+    this.serviceCategories
+      .list()
+      .pipe(map((list: ListCategoriesResponse[]) => toViewModelCategory(list))),
   );
 }
