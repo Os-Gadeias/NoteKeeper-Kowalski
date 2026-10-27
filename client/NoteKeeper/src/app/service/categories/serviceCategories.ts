@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { URL_API } from '../../auth/auth.tokens';
 
-Injectable({
+@Injectable({
   providedIn: 'root',
-});
+})
 
 export class ServiceCategories {
   private readonly urlApi = inject(URL_API);

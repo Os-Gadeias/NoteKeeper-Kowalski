@@ -26,7 +26,7 @@ export const routes: Routes = [
     path: 'category/register',
     loadComponent: () =>
       import('./components/categories/registerCategories/registerCategory').then(
-        (component) => component.RegisterCategorie,
+        (component) => component.RegisterCategory,
       ),
   },
 ];

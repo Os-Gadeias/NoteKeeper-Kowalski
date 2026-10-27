@@ -1,4 +1,8 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, Inject, signal } from '@angular/core';
+import { ServiceCategories } from '../../../service/categories/serviceCategories';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { extractApiError } from '../../../../api/extractApiError';
 
 interface CategoryIcon {
   name: string;
@@ -11,7 +15,13 @@ interface CategoryIcon {
   imports: [],
   templateUrl: './registerCategory.html',
 })
-export class RegisterCategorie {
+export class RegisterCategory {
+  protected serviceCategories = inject(ServiceCategories);
+
+  constructor(protected router: Router) {}
+
+  protected erroMessage = '';
+
   protected readonly categoryTitle = signal('');
 
   protected readonly selectedIcon = signal('bi-folder-fill');
@@ -68,13 +78,19 @@ export class RegisterCategorie {
     }
 
     const category = {
-      nome: this.categoryTitle().trim(),
+      titulo: this.categoryTitle().trim(),
       icone: this.selectedIcon(),
     };
 
     console.log('Category to register:', category);
 
-    // Futuramente:
-    // this.categoryService.register(category).subscribe(...)
+    this.serviceCategories.register(category).subscribe({
+      next: () => {
+        this.router.navigate(['']);
+      },
+      error: (erro: HttpErrorResponse) => {
+        this.erroMessage = extractApiError(erro);
+      },
+    });
   }
 }
