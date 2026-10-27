@@ -22,7 +22,7 @@ public sealed class AtualizarNotaCommandHandler(IRepositorioNota repositorio)
         var nota = await repositorio.ObterAsync(command.Id, command.UsuarioId, ct);
         if (nota is null)
         {
-            return Result.Fail<NotaDto>(Erros.Criar(TipoErro.NaoEncontrado, "Nota não encontrada."));
+            return Result.Fail<NotaDto>(Erros.Criar(TipoErro.NaoEncontrado, "Note not found."));
         }
 
         if (!StatusNotaParser.TryParse(command.Status, out var status))
@@ -42,7 +42,7 @@ public sealed class AtualizarNotaCommandHandler(IRepositorioNota repositorio)
         if (await repositorio.TituloExisteAsync(command.UsuarioId, nota.TituloNormalizado, command.Id, ct))
         {
             return Result.Fail<NotaDto>(
-                Erros.Criar(TipoErro.Conflito, "Já existe uma nota com este título.", "titulo"));
+                Erros.Criar(TipoErro.Conflito, "A note with this title already exists.", "titulo"));
         }
 
         var categoriaIds = command.CategoriaIds?.Distinct().ToArray() ?? [];
@@ -51,7 +51,7 @@ public sealed class AtualizarNotaCommandHandler(IRepositorioNota repositorio)
         if (categoriasDaConta is null || categoriasDaConta.Count != categoriaIds.Length)
         {
             return Result.Fail<NotaDto>(
-                Erros.Criar(TipoErro.NaoEncontrado, "Uma ou mais categorias não foram encontradas."));
+                Erros.Criar(TipoErro.NaoEncontrado, "One or more categories were not found."));
         }
 
         await repositorio.SalvarAsync(nota, categoriaIds, ct);

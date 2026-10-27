@@ -92,6 +92,11 @@ namespace NoteKeeper.Infraestrutura.Compartilhado.Orm.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Icone")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasMaxLength(100)

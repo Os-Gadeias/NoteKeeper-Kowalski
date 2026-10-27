@@ -1,27 +1,28 @@
-import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { ServiceStorage } from './serviceStorage'; 
+import { HttpInterceptorFn } from '@angular/common/http';
+
+import { ServiceStorage } from './serviceStorage';
+import { URL_API } from './auth.tokens';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = inject(ServiceStorage).get('token');
-  const requestUrl = new URL(
-    req.url,
-    typeof window === 'undefined' ? 'https://localhost:7094' : window.location.origin,
-  );
-  const isTrustedApiRequest =
-    requestUrl.origin === 'https://localhost:7094' &&
-    requestUrl.pathname.startsWith('/api/') &&
-    !/^\/api\/auth\/(login|cadastro)\/?$/i.test(requestUrl.pathname);
+  const serviceStorage = inject(ServiceStorage);
+  const urlApi = inject(URL_API);
 
-  if (!token || !isTrustedApiRequest) {
+  const token = serviceStorage.get('token');
+
+  // Não adiciona o token a requisições externas
+  const isApiRequest = req.url === urlApi || req.url.startsWith(`${urlApi}/`);
+
+  if (!token || !isApiRequest) {
     return next(req);
   }
 
-  const requisicaoAutenticada = req.clone({
+  // Clona a requisição e adiciona o JWT
+  const authRequest = req.clone({
     setHeaders: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  return next(requisicaoAutenticada);
+  return next(authRequest);
 };

@@ -23,15 +23,16 @@ public sealed class CategoriaHandlerTests
 
         // Act
         var result = await handler.Handle(
-            new CriarCategoriaCommand(usuarioId, "  Trabalho  "),
+            new CriarCategoriaCommand(usuarioId, "  Trabalho  ", "  bi bi-tag  "),
             CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
         Assert.Equal("Trabalho", result.Value.Titulo);
+        Assert.Equal("bi bi-tag", result.Value.Icone);
         repositorio.Verify(
             x => x.SalvarAsync(
-                It.Is<Categoria>(categoria => categoria.Titulo == "Trabalho" && categoria.UsuarioId == usuarioId),
+                It.Is<Categoria>(categoria => categoria.Titulo == "Trabalho" && categoria.UsuarioId == usuarioId && categoria.Icone == "bi bi-tag"),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }
@@ -45,7 +46,7 @@ public sealed class CategoriaHandlerTests
 
         // Act
         var result = await handler.Handle(
-            new CriarCategoriaCommand(Guid.NewGuid(), "A"),
+            new CriarCategoriaCommand(Guid.NewGuid(), "A", "bi bi-tag"),
             CancellationToken.None);
 
         // Assert
@@ -72,7 +73,7 @@ public sealed class CategoriaHandlerTests
 
         // Act
         var result = await handler.Handle(
-            new CriarCategoriaCommand(usuarioId, "Trabalho"),
+            new CriarCategoriaCommand(usuarioId, "Trabalho", "bi bi-tag"),
             CancellationToken.None);
 
         // Assert
@@ -89,8 +90,8 @@ public sealed class CategoriaHandlerTests
         var usuarioId = Guid.NewGuid();
         IReadOnlyList<Categoria> categorias = new[]
         {
-            new Categoria(usuarioId, "Trabalho"),
-            new Categoria(usuarioId, "Pessoal")
+            new Categoria(usuarioId, "Trabalho", "bi bi-tag"),
+            new Categoria(usuarioId, "Pessoal", "bi bi-person")
         };
         var repositorio = new Mock<IRepositorioCategoria>();
         repositorio
@@ -104,7 +105,7 @@ public sealed class CategoriaHandlerTests
         // Assert
         Assert.True(result.IsSuccess);
         Assert.Equal(2, result.Value.Count);
-        Assert.Contains(result.Value, categoria => categoria.Titulo == "Pessoal");
+        Assert.Contains(result.Value, categoria => categoria.Titulo == "Pessoal" && categoria.Icone == "bi bi-person");
     }
 
     [Fact]
@@ -131,7 +132,7 @@ public sealed class CategoriaHandlerTests
     {
         // Arrange
         var usuarioId = Guid.NewGuid();
-        var categoria = new Categoria(usuarioId, "Trabalho");
+        var categoria = new Categoria(usuarioId, "Trabalho", "bi bi-tag");
         var repositorio = new Mock<IRepositorioCategoria>();
         repositorio
             .Setup(x => x.ObterAsync(categoria.Id, usuarioId, It.IsAny<CancellationToken>()))
@@ -147,6 +148,7 @@ public sealed class CategoriaHandlerTests
         Assert.True(result.IsSuccess);
         Assert.Equal(categoria.Id, result.Value.Id);
         Assert.Equal(categoria.Titulo, result.Value.Titulo);
+        Assert.Equal(categoria.Icone, result.Value.Icone);
     }
 
     [Fact]
@@ -154,7 +156,7 @@ public sealed class CategoriaHandlerTests
     {
         // Arrange
         var usuarioId = Guid.NewGuid();
-        var categoria = new Categoria(usuarioId, "Trabalho");
+        var categoria = new Categoria(usuarioId, "Trabalho", "bi bi-tag");
         var repositorio = new Mock<IRepositorioCategoria>();
         repositorio
             .Setup(x => x.ObterAsync(categoria.Id, usuarioId, It.IsAny<CancellationToken>()))
@@ -166,7 +168,7 @@ public sealed class CategoriaHandlerTests
 
         // Act
         var result = await handler.Handle(
-            new AtualizarCategoriaCommand(usuarioId, categoria.Id, "Pessoal"),
+            new AtualizarCategoriaCommand(usuarioId, categoria.Id, "Pessoal", "  bi bi-person  "),
             CancellationToken.None);
 
         // Assert
@@ -181,7 +183,7 @@ public sealed class CategoriaHandlerTests
     {
         // Arrange
         var usuarioId = Guid.NewGuid();
-        var categoria = new Categoria(usuarioId, "Trabalho");
+        var categoria = new Categoria(usuarioId, "Trabalho", "bi bi-tag");
         var repositorio = new Mock<IRepositorioCategoria>();
         repositorio
             .Setup(x => x.ObterAsync(categoria.Id, usuarioId, It.IsAny<CancellationToken>()))
@@ -196,12 +198,14 @@ public sealed class CategoriaHandlerTests
 
         // Act
         var result = await handler.Handle(
-            new AtualizarCategoriaCommand(usuarioId, categoria.Id, "Pessoal"),
+            new AtualizarCategoriaCommand(usuarioId, categoria.Id, "Pessoal", "  bi bi-person  "),
             CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
         Assert.Equal("Pessoal", result.Value.Titulo);
+        Assert.Equal("bi bi-person", result.Value.Icone);
+        Assert.Equal("bi bi-person", categoria.Icone);
         repositorio.Verify(x => x.SalvarAsync(categoria, It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -210,7 +214,7 @@ public sealed class CategoriaHandlerTests
     {
         // Arrange
         var usuarioId = Guid.NewGuid();
-        var categoria = new Categoria(usuarioId, "Trabalho");
+        var categoria = new Categoria(usuarioId, "Trabalho", "bi bi-tag");
         var repositorio = new Mock<IRepositorioCategoria>();
         repositorio
             .Setup(x => x.ObterAsync(categoria.Id, usuarioId, It.IsAny<CancellationToken>()))
@@ -249,4 +253,58 @@ public sealed class CategoriaHandlerTests
         Assert.True(result.IsFailed);
         repositorio.Verify(x => x.ExcluirAsync(It.IsAny<Categoria>(), It.IsAny<CancellationToken>()), Times.Never);
     }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData(101)]
+    public async Task CriarCategoria_ComIconeInvalido_RetornaFalhaSemSalvar(object? valor)
+    {
+        // Arrange
+        var icone = valor is int tamanho ? new string('a', tamanho) : valor as string;
+        var repositorio = new Mock<IRepositorioCategoria>();
+        var handler = new CriarCategoriaCommandHandler(repositorio.Object);
+
+        // Act
+        var result = await handler.Handle(
+            new CriarCategoriaCommand(Guid.NewGuid(), "Trabalho", icone),
+            CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsFailed);
+        Assert.Contains(result.Errors, erro => erro.Metadata["Campo"].ToString() == "icone");
+        repositorio.VerifyNoOtherCalls();
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData(101)]
+    public async Task AtualizarCategoria_ComIconeInvalido_RetornaFalhaSemSalvar(object? valor)
+    {
+        // Arrange
+        var icone = valor is int tamanho ? new string('a', tamanho) : valor as string;
+        var usuarioId = Guid.NewGuid();
+        var categoria = new Categoria(usuarioId, "Trabalho", "bi bi-tag");
+        var repositorio = new Mock<IRepositorioCategoria>();
+        repositorio
+            .Setup(x => x.ObterAsync(categoria.Id, usuarioId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(categoria);
+        var handler = new AtualizarCategoriaCommandHandler(repositorio.Object);
+
+        // Act
+        var result = await handler.Handle(
+            new AtualizarCategoriaCommand(usuarioId, categoria.Id, "Trabalho", icone),
+            CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsFailed);
+        Assert.Contains(result.Errors, erro => erro.Metadata["Campo"].ToString() == "icone");
+        repositorio.Verify(
+            x => x.SalvarAsync(It.IsAny<Categoria>(), It.IsAny<CancellationToken>()),
+            Times.Never);
+    }
+
 }

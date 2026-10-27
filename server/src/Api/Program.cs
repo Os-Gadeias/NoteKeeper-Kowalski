@@ -21,10 +21,10 @@ builder.Services.AddScoped<IEmissorTokens, JwtTokenGenerator>();
 builder.Services
     .AddOptions<JwtOptions>()
     .BindConfiguration(JwtOptions.SectionName)
-    .Validate(x => !string.IsNullOrWhiteSpace(x.Issuer), "Jwt:Issuer é obrigatório.")
-    .Validate(x => !string.IsNullOrWhiteSpace(x.Audience), "Jwt:Audience é obrigatório.")
-    .Validate(x => Encoding.UTF8.GetByteCount(x.SigningKey) >= 32, "Jwt:SigningKey deve ter ao menos 32 bytes.")
-    .Validate(x => x.ExpiresInMinutes is > 0 and <= 35791394, "Jwt:ExpiresInMinutes inválido.")
+    .Validate(x => !string.IsNullOrWhiteSpace(x.Issuer), "Jwt:Issuer is required.")
+    .Validate(x => !string.IsNullOrWhiteSpace(x.Audience), "Jwt:Audience is required.")
+    .Validate(x => Encoding.UTF8.GetByteCount(x.SigningKey) >= 32, "Jwt:SigningKey must be at least 32 bytes.")
+    .Validate(x => x.ExpiresInMinutes is > 0 and <= 35791394, "Invalid Jwt:ExpiresInMinutes.")
     .ValidateOnStart();
 
 var jwt = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>() ?? new();
@@ -53,7 +53,7 @@ builder.Services
             var jti = context.Principal?.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
             if (string.IsNullOrWhiteSpace(jti))
             {
-                context.Fail("Token sem identificador.");
+                context.Fail("Token is missing an identifier.");
                 return;
             }
 
@@ -61,7 +61,7 @@ builder.Services
 
             if (await revocation.EstaRevogadoAsync(jti, context.HttpContext.RequestAborted))
             {
-                context.Fail("Token revogado.");
+                context.Fail("Token has been revoked.");
             }
         }
     };
@@ -125,7 +125,7 @@ app.UseExceptionHandler(error => error.Run(async context =>
         new Microsoft.AspNetCore.Mvc.ProblemDetails
         {
             Status = 500,
-            Title = "Erro interno do servidor"
+            Title = "Internal server error"
         });
 }));
 

@@ -37,17 +37,17 @@ public sealed class Nota
 
         if (Titulo.Length < TamanhoMinimoTitulo || Titulo.Length > TamanhoMaximoTitulo)
         {
-            erros.Add(new("titulo", "Título deve ter entre 2 e 100 caracteres."));
+            erros.Add(new("titulo", "Title must be between 2 and 100 characters."));
         }
 
         if (Descricao?.Length > TamanhoMaximoDescricao)
         {
-            erros.Add(new("descricao", "Descrição deve ter no máximo 300 caracteres."));
+            erros.Add(new("descricao", "Description must be at most 300 characters."));
         }
 
         if (!Enum.IsDefined(Status))
         {
-            erros.Add(new("status", "Status inválido."));
+            erros.Add(new("status", "Invalid status."));
         }
 
         return erros;

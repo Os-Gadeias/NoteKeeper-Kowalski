@@ -6,7 +6,7 @@ using NoteKeeper.Dominio.Modulos.Categorias;
 
 namespace NoteKeeper.Aplicacao.Modulos.Categorias;
 
-public sealed record CriarCategoriaCommand(Guid UsuarioId, string? Titulo)
+public sealed record CriarCategoriaCommand(Guid UsuarioId, string? Titulo, string? Icone)
     : IRequest<Result<CategoriaDto>>;
 
 public sealed class CriarCategoriaCommandHandler(IRepositorioCategoria repositorio)
@@ -14,7 +14,7 @@ public sealed class CriarCategoriaCommandHandler(IRepositorioCategoria repositor
 {
     public async Task<Result<CategoriaDto>> Handle(CriarCategoriaCommand command, CancellationToken ct)
     {
-        var categoria = new Categoria(command.UsuarioId, command.Titulo ?? string.Empty);
+        var categoria = new Categoria(command.UsuarioId, command.Titulo ?? string.Empty, command.Icone ?? string.Empty);
         var erros = categoria.Validar();
 
         if (erros.Count > 0)
@@ -25,7 +25,7 @@ public sealed class CriarCategoriaCommandHandler(IRepositorioCategoria repositor
         if (await repositorio.TituloExisteAsync(command.UsuarioId, categoria.TituloNormalizado, null, ct))
         {
             return Result.Fail<CategoriaDto>(
-                Erros.Criar(TipoErro.Conflito, "Já existe uma categoria com este título.", "titulo"));
+                Erros.Criar(TipoErro.Conflito, "A category with this title already exists.", "titulo"));
         }
 
         await repositorio.SalvarAsync(categoria, ct);

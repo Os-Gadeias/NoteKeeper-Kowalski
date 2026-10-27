@@ -14,6 +14,10 @@ public sealed class CategoriaConfiguration : IEntityTypeConfiguration<Categoria>
             .HasMaxLength(Categoria.TamanhoMaximoTitulo)
             .IsRequired();
 
+        builder.Property(categoria => categoria.Icone)
+            .HasMaxLength(Categoria.TamanhoMaximoIcone)
+            .IsRequired();
+
         builder.Property(categoria => categoria.TituloNormalizado)
             .HasMaxLength(Categoria.TamanhoMaximoTitulo)
             .IsRequired();

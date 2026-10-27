@@ -17,7 +17,7 @@ public sealed class ObterCategoriaQueryHandler(IRepositorioCategoria repositorio
         var categoria = await repositorio.ObterAsync(query.Id, query.UsuarioId, ct);
         if (categoria is null)
         {
-            return Result.Fail<CategoriaDto>(Erros.Criar(TipoErro.NaoEncontrado, "Categoria não encontrada."));
+            return Result.Fail<CategoriaDto>(Erros.Criar(TipoErro.NaoEncontrado, "Category not found."));
         }
 
         return Result.Ok(DtoMapper.ToDto(categoria));

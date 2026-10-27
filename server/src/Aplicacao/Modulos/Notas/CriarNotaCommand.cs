@@ -32,7 +32,7 @@ public sealed class CriarNotaCommandHandler(IRepositorioNota repositorio)
         if (await repositorio.TituloExisteAsync(command.UsuarioId, nota.TituloNormalizado, null, ct))
         {
             return Result.Fail<NotaDto>(
-                Erros.Criar(TipoErro.Conflito, "Já existe uma nota com este título.", "titulo"));
+                Erros.Criar(TipoErro.Conflito, "A note with this title already exists.", "titulo"));
         }
 
         var categoriaIds = command.CategoriaIds?.Distinct().ToArray() ?? [];
@@ -41,7 +41,7 @@ public sealed class CriarNotaCommandHandler(IRepositorioNota repositorio)
         if (categoriasDaConta is null || categoriasDaConta.Count != categoriaIds.Length)
         {
             return Result.Fail<NotaDto>(
-                Erros.Criar(TipoErro.NaoEncontrado, "Uma ou mais categorias não foram encontradas."));
+                Erros.Criar(TipoErro.NaoEncontrado, "One or more categories were not found."));
         }
 
         await repositorio.SalvarAsync(nota, categoriaIds, ct);

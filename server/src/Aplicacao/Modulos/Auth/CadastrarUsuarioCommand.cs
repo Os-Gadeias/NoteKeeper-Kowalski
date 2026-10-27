@@ -17,13 +17,13 @@ public sealed class CadastrarUsuarioCommandHandler(IGerenciadorIdentidade identi
 
         if (string.IsNullOrWhiteSpace(command.Nome))
         {
-            erros.Add(Erros.Criar(TipoErro.Validacao, "Nome é obrigatório.", "nome"));
+            erros.Add(Erros.Criar(TipoErro.Validacao, "Name is required.", "nome"));
         }
 
         if (string.IsNullOrWhiteSpace(command.Email)
             || !new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(command.Email))
         {
-            erros.Add(Erros.Criar(TipoErro.Validacao, "Informe um e-mail válido.", "email"));
+            erros.Add(Erros.Criar(TipoErro.Validacao, "Enter a valid email address.", "email"));
         }
 
         if (string.IsNullOrEmpty(command.Senha)
@@ -33,7 +33,7 @@ public sealed class CadastrarUsuarioCommandHandler(IGerenciadorIdentidade identi
         {
             erros.Add(Erros.Criar(
                 TipoErro.Validacao,
-                "A senha deve ter pelo menos 8 caracteres, incluindo um número e um caractere especial.",
+                "Password must be at least 8 characters long, including a number and a special character.",
                 "senha"));
         }
 
@@ -55,7 +55,7 @@ public sealed class CadastrarUsuarioCommandHandler(IGerenciadorIdentidade identi
         catch (InvalidOperationException ex) when (ex.Message == "EMAIL_DUPLICADO")
         {
             return Result.Fail<UsuarioDto>(
-                Erros.Criar(TipoErro.Conflito, "O e-mail já está cadastrado.", "email"));
+                Erros.Criar(TipoErro.Conflito, "Email is already registered.", "email"));
         }
         catch (ArgumentException ex)
         {

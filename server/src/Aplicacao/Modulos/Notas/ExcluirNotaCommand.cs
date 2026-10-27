@@ -16,7 +16,7 @@ public sealed class ExcluirNotaCommandHandler(IRepositorioNota repositorio)
         var nota = await repositorio.ObterAsync(command.Id, command.UsuarioId, ct);
         if (nota is null)
         {
-            return Result.Fail(Erros.Criar(TipoErro.NaoEncontrado, "Nota não encontrada."));
+            return Result.Fail(Erros.Criar(TipoErro.NaoEncontrado, "Note not found."));
         }
 
         await repositorio.ExcluirAsync(nota, ct);

@@ -1,0 +1,176 @@
+<section class="min-h-[calc(100vh-72px)] bg-background px-4 py-10 md:px-10">
+  <div class="mx-auto max-w-7xl">
+    <!-- Page Header -->
+    <div class="mb-10">
+      <span
+        class="mb-3 inline-flex rounded-full border border-primary/20 bg-primary-muted px-3 py-1 text-xs font-semibold text-primary-light"
+      >
+        Organization
+      </span>
+
+      <h1 class="font-heading text-3xl font-extrabold text-text-primary md:text-4xl">
+        Register <span class="text-primary">Category</span>
+      </h1>
+
+      <p class="mt-2 font-body text-sm text-text-secondary">
+        Create a new category to organize your notes and reminders.
+      </p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="mx-auto max-w-2xl">
+      <div class="rounded-card border border-border bg-surface p-6 shadow-card sm:p-8 md:p-10">
+        <!-- Card Header -->
+        <div class="mb-8 flex items-center gap-4">
+          <div
+            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-muted text-primary"
+          >
+            <i class="bi bi-folder-plus text-2xl"></i>
+          </div>
+
+          <div>
+            <h2 class="font-heading text-xl font-bold text-text-primary">Category Details</h2>
+
+            <p class="mt-1 text-sm text-text-secondary">
+              Choose a name and an icon for your category.
+            </p>
+          </div>
+        </div>
+
+        @if (errorMessage(); as message) {
+          <!-- Error Message -->
+          <div
+            role="alert"
+            class="flex mb-3 items-center gap-3 rounded-input border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger transition-all duration-200"
+          >
+            <!-- Error Icon -->
+            <i
+              class="bi bi-exclamation-triangle inline-flex h-[20px] w-[20px] shrink-0 items-center justify-center text-[20px] leading-none"
+              aria-hidden="true"
+            ></i>
+
+            <!-- Error Text -->
+            <span class="font-body font-medium leading-relaxed">
+              {{ message }}
+            </span>
+          </div>
+        }
+
+        <!-- Form -->
+        <form class="flex flex-col gap-8" (submit)="registerCategory($event)">
+          <!-- TITLE -->
+          <div class="flex flex-col gap-2">
+            <label for="categoryTitle" class="font-heading text-sm font-semibold text-text-primary">
+              Category Title
+              <span class="text-primary">*</span>
+            </label>
+
+            <input
+              id="categoryTitle"
+              name="categoryTitle"
+              type="text"
+              placeholder="e.g. Personal, Work, Studies..."
+              minlength="2"
+              maxlength="100"
+              required
+              [value]="categoryTitle()"
+              (input)="onTitleInput($event)"
+              class="w-full rounded-input border border-border bg-background-tertiary px-4 py-3 font-body text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+
+            <div class="flex items-center justify-between gap-3">
+              <p class="text-xs text-text-muted">Title must have between 2 and 100 characters.</p>
+
+              <span class="shrink-0 text-xs text-text-muted">
+                {{ categoryTitle().length }}/100
+              </span>
+            </div>
+          </div>
+
+          <!-- ICON SELECTION -->
+          <div class="flex flex-col gap-4">
+            <div>
+              <h3 class="font-heading text-sm font-semibold text-text-primary">
+                Category Icon
+                <span class="text-primary">*</span>
+              </h3>
+
+              <p class="mt-1 text-xs text-text-muted">
+                Select an icon that best represents your category.
+              </p>
+            </div>
+
+            <!-- Icons Grid -->
+            <div class="grid grid-cols-4 gap-3 sm:grid-cols-6 md:grid-cols-8">
+              @for (icon of categoryIcons; track icon.name) {
+                <button
+                  type="button"
+                  [title]="icon.label"
+                  [attr.aria-label]="icon.label"
+                  [attr.aria-pressed]="selectedIcon() === icon.name"
+                  (click)="selectIcon(icon.name)"
+                  class="group flex aspect-square cursor-pointer items-center justify-center rounded-button border transition-all duration-200 hover:-translate-y-0.5"
+                  [class.border-primary]="selectedIcon() === icon.name"
+                  [class.bg-primary-muted]="selectedIcon() === icon.name"
+                  [class.text-primary]="selectedIcon() === icon.name"
+                  [class.shadow-primary]="selectedIcon() === icon.name"
+                  [class.border-border]="selectedIcon() !== icon.name"
+                  [class.bg-background-tertiary]="selectedIcon() !== icon.name"
+                  [class.text-text-secondary]="selectedIcon() !== icon.name"
+                >
+                  <i
+                    class="bi text-2xl transition-transform duration-200 group-hover:scale-110"
+                    [class]="icon.name"
+                  ></i>
+                </button>
+              }
+            </div>
+
+            <!-- Selected Icon Preview -->
+            <div
+              class="flex items-center gap-3 rounded-input border border-border bg-background-secondary px-4 py-3"
+            >
+              <div
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-button bg-primary-muted text-primary"
+              >
+                <i class="bi text-xl" [class]="selectedIcon()"></i>
+              </div>
+
+              <div>
+                <p class="text-xs text-text-muted">Selected icon</p>
+
+                <p class="font-heading text-sm font-semibold text-text-primary">
+                  {{ selectedIconLabel() }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTION BUTTONS -->
+          <div
+            class="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end"
+          >
+            <!-- Cancel -->
+            <a
+              routerLink="/categories"
+              class="flex cursor-pointer items-center justify-center gap-2 rounded-button border border-border bg-background-tertiary px-6 py-3 font-heading text-sm font-semibold text-text-secondary transition-all duration-200 hover:border-border-hover hover:bg-surface-hover hover:text-text-primary"
+            >
+              <i class="bi bi-x-lg"></i>
+              Cancel
+            </a>
+
+            <!-- Confirm -->
+            <button
+              type="submit"
+              class="flex cursor-pointer items-center justify-center gap-2 rounded-button bg-primary px-6 py-3 font-heading text-sm font-bold text-text-inverse shadow-primary transition-all duration-200 hover:bg-primary-hover hover:shadow-card-hover disabled:cursor-not-allowed disabled:opacity-50"
+              [disabled]="!isFormValid()"
+            >
+              <i class="bi bi-check-lg text-lg"></i>
+              Create Category
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
