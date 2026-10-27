@@ -4,20 +4,7 @@ import { ServiceCategories } from '../../../service/categories/serviceCategories
 import { map } from 'rxjs';
 import { ListCategoriesResponse } from '../../../service/categories/models';
 import { toSignal } from '@angular/core/rxjs-interop';
-
-interface CategoryViewModel {
-  id: string;
-  titulo: string;
-  icone: string;
-}
-
-function toViewModel(model: ListCategoriesResponse[]): CategoryViewModel[] {
-  return model.map((category) => ({
-    id: category.id,
-    titulo: category.titulo,
-    icone: category.icone,
-  }));
-}
+import { toViewModel } from '../../util';
 
 @Component({
   selector: 'app-listCourse',
