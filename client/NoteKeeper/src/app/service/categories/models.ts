@@ -19,3 +19,13 @@ export interface GetByIdResponse {
   titulo: string;
   icone: string;
 }
+
+export interface UpdateCategoryRequest {
+  titulo: string;
+  icone: string;
+}
+export interface UpdateCategoryResponse {
+  id: string;
+  titulo: string;
+  icone: string;
+}

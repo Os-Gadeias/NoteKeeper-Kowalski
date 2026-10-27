@@ -78,8 +78,7 @@
             <div class="flex items-center gap-2">
               <!-- Edit Button -->
               <button
-                type="button"
-                [attr.aria-label]="'Edit ' + category.id"
+                [routerLink]="['/updateCategoryPage', category.id]"
                 title="Edit category"
                 class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-button border border-border bg-background-tertiary text-text-secondary transition-all duration-200 hover:border-primary/40 hover:bg-primary-muted hover:text-primary"
               >

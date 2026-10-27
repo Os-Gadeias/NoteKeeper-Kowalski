@@ -37,4 +37,12 @@ export const routes: Routes = [
         (component) => component.DeleteCategory,
       ),
   },
+  { path: 'updateCategoryPage/:id', redirectTo: 'category/update/:id' },
+  {
+    path: 'category/update/:id',
+    loadComponent: () =>
+      import('./components/categories/updateCategory/updateCategory').then(
+        (component) => component.UpdateCategory,
+      ),
+  },
 ];

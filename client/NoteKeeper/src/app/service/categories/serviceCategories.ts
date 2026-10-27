@@ -4,6 +4,8 @@ import {
   ListCategoriesResponse,
   RegisterCategoryRequest,
   RegisterCategoryResponse,
+  UpdateCategoryRequest,
+  UpdateCategoryResponse,
 } from './models';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -31,5 +33,8 @@ export class ServiceCategories {
 
   delete(id: string) {
     return this.http.delete(`${this.urlApi}/categorias/${id}`);
+  }
+  update(id: string, req: UpdateCategoryRequest): Observable<UpdateCategoryResponse> {
+    return this.http.put<UpdateCategoryResponse>(`${this.urlApi}/categorias/${id}`, req);
   }
 }
