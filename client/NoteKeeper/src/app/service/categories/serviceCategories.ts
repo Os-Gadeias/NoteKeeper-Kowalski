@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  GetByIdResponse,
   ListCategoriesResponse,
   RegisterCategoryRequest,
   RegisterCategoryResponse,
@@ -22,5 +23,9 @@ export class ServiceCategories {
 
   list(): Observable<ListCategoriesResponse[]> {
     return this.http.get<ListCategoriesResponse[]>(`${this.urlApi}/categorias`);
+  }
+
+  getById(id: string): Observable<GetByIdResponse> {
+    return this.http.get<GetByIdResponse>(`${this.urlApi}/categorias/${id}`);
   }
 }

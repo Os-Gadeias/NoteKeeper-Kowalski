@@ -13,3 +13,9 @@ export interface ListCategoriesResponse {
   titulo: string;
   icone: string;
 }
+
+export interface GetByIdResponse {
+  id: string;
+  titulo: string;
+  icone: string;
+}
