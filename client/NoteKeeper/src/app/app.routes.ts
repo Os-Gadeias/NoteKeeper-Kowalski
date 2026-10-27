@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+  //auth
   { path: 'loginPage', redirectTo: 'login' },
   {
     path: 'login',
@@ -13,6 +14,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/auth/createUser/createUser').then((component) => component.CreateUser),
   },
+  //categories
   { path: 'categoriesPage', redirectTo: 'categories' },
   {
     path: 'categories',
@@ -44,5 +46,12 @@ export const routes: Routes = [
       import('./components/categories/updateCategory/updateCategory').then(
         (component) => component.UpdateCategory,
       ),
+  },
+  //notes
+  { path: 'notesPage', redirectTo: 'notes' },
+  {
+    path: 'notes',
+    loadComponent: () =>
+      import('./components/notes/listNotes/listNotes').then((component) => component.ListNotes),
   },
 ];
