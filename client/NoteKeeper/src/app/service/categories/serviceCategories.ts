@@ -28,4 +28,8 @@ export class ServiceCategories {
   getById(id: string): Observable<GetByIdResponse> {
     return this.http.get<GetByIdResponse>(`${this.urlApi}/categorias/${id}`);
   }
+
+  delete(id: string) {
+    return this.http.delete(`${this.urlApi}/categorias/${id}`);
+  }
 }
