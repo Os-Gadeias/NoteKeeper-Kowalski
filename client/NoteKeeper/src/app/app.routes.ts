@@ -25,8 +25,16 @@ export const routes: Routes = [
   {
     path: 'category/register',
     loadComponent: () =>
-      import('./components/categories/registerCategories/registerCategory').then(
+      import('./components/categories/registerCategory/registerCategory').then(
         (component) => component.RegisterCategory,
+      ),
+  },
+  { path: 'deleteCategoryPage/:id', redirectTo: 'category/delete/:id' },
+  {
+    path: 'category/delete/:id',
+    loadComponent: () =>
+      import('./components/categories/deleteCategory/deleteCategory').then(
+        (component) => component.DeleteCategory,
       ),
   },
 ];
