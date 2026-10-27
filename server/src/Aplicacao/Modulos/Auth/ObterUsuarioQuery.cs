@@ -15,7 +15,7 @@ public sealed class ObterUsuarioQueryHandler(IGerenciadorIdentidade identidade)
         var usuario = await identidade.ObterPorIdAsync(query.UsuarioId, ct);
         if (usuario is null)
         {
-            return Result.Fail<UsuarioDto>(Erros.Criar(TipoErro.NaoEncontrado, "Usuário não encontrado."));
+            return Result.Fail<UsuarioDto>(Erros.Criar(TipoErro.NaoEncontrado, "User not found."));
         }
 
         return Result.Ok(usuario);

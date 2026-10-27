@@ -25,7 +25,7 @@ public sealed class CriarCategoriaCommandHandler(IRepositorioCategoria repositor
         if (await repositorio.TituloExisteAsync(command.UsuarioId, categoria.TituloNormalizado, null, ct))
         {
             return Result.Fail<CategoriaDto>(
-                Erros.Criar(TipoErro.Conflito, "Já existe uma categoria com este título.", "titulo"));
+                Erros.Criar(TipoErro.Conflito, "A category with this title already exists.", "titulo"));
         }
 
         await repositorio.SalvarAsync(categoria, ct);

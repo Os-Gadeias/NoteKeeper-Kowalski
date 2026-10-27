@@ -27,7 +27,7 @@ public static class ProblemExtensions
             var errors = result.Errors
                 .GroupBy(error => error.Metadata.GetValueOrDefault("Campo")?.ToString() ?? string.Empty)
                 .ToDictionary(group => group.Key, group => group.Select(error => error.Message).ToArray());
-            problem = new ValidationProblemDetails(errors) { Title = "Requisição inválida" };
+            problem = new ValidationProblemDetails(errors) { Title = "Invalid request" };
         }
         else
         {
@@ -35,10 +35,10 @@ public static class ProblemExtensions
             {
                 Title = status switch
                 {
-                    401 => "Não autenticado",
-                    404 => "Recurso não encontrado",
-                    409 => "Conflito",
-                    _ => "Erro interno do servidor"
+                    401 => "Unauthenticated",
+                    404 => "Resource not found",
+                    409 => "Conflict",
+                    _ => "Internal server error"
                 },
                 Detail = status == 500 ? null : primeiroErro?.Message
             };

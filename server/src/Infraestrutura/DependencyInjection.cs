@@ -19,7 +19,7 @@ public static class DependencyInjection
         var connection = configuration.GetConnectionString("SqlServer");
         if (string.IsNullOrWhiteSpace(connection))
         {
-            throw new InvalidOperationException("Connection string \"SqlServer\" não configurada.");
+            throw new InvalidOperationException("Connection string \"SqlServer\" is not configured.");
         }
 
         services.AddDbContext<NoteKeeperDbContext>(options =>

@@ -16,7 +16,7 @@ public sealed class ObterNotaQueryHandler(IRepositorioNota repositorio)
         var nota = await repositorio.ObterAsync(query.Id, query.UsuarioId, ct);
         if (nota is null)
         {
-            return Result.Fail<NotaDto>(Erros.Criar(TipoErro.NaoEncontrado, "Nota não encontrada."));
+            return Result.Fail<NotaDto>(Erros.Criar(TipoErro.NaoEncontrado, "Note not found."));
         }
 
         return Result.Ok(DtoMapper.ToDto(nota));

@@ -16,7 +16,7 @@ public sealed class ExcluirCategoriaCommandHandler(IRepositorioCategoria reposit
         var categoria = await repositorio.ObterAsync(command.Id, command.UsuarioId, ct);
         if (categoria is null)
         {
-            return Result.Fail(Erros.Criar(TipoErro.NaoEncontrado, "Categoria não encontrada."));
+            return Result.Fail(Erros.Criar(TipoErro.NaoEncontrado, "Category not found."));
         }
 
         await repositorio.ExcluirAsync(categoria, ct);

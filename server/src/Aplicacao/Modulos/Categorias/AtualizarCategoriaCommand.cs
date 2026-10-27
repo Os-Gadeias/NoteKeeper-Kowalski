@@ -17,7 +17,7 @@ public sealed class AtualizarCategoriaCommandHandler(IRepositorioCategoria repos
         var categoria = await repositorio.ObterAsync(command.Id, command.UsuarioId, ct);
         if (categoria is null)
         {
-            return Result.Fail<CategoriaDto>(Erros.Criar(TipoErro.NaoEncontrado, "Categoria não encontrada."));
+            return Result.Fail<CategoriaDto>(Erros.Criar(TipoErro.NaoEncontrado, "Category not found."));
         }
 
         categoria.AlterarTitulo(command.Titulo ?? string.Empty);
@@ -32,7 +32,7 @@ public sealed class AtualizarCategoriaCommandHandler(IRepositorioCategoria repos
         if (await repositorio.TituloExisteAsync(command.UsuarioId, categoria.TituloNormalizado, command.Id, ct))
         {
             return Result.Fail<CategoriaDto>(
-                Erros.Criar(TipoErro.Conflito, "Já existe uma categoria com este título.", "titulo"));
+                Erros.Criar(TipoErro.Conflito, "A category with this title already exists.", "titulo"));
         }
 
         await repositorio.SalvarAsync(categoria, ct);

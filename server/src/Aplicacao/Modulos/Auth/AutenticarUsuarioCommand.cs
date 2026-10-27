@@ -18,13 +18,13 @@ public sealed class AutenticarUsuarioCommandHandler(
         if (string.IsNullOrWhiteSpace(command.Email) || string.IsNullOrWhiteSpace(command.Senha))
         {
             return Result.Fail<TokenDto>(
-                Erros.Criar(TipoErro.Validacao, "E-mail e senha são obrigatórios.", "credenciais"));
+                Erros.Criar(TipoErro.Validacao, "Email and password are required.", "credenciais"));
         }
 
         var usuario = await identidade.AutenticarAsync(command.Email, command.Senha, ct);
         if (usuario is null)
         {
-            return Result.Fail<TokenDto>(Erros.Criar(TipoErro.NaoAutenticado, "Credenciais inválidas."));
+            return Result.Fail<TokenDto>(Erros.Criar(TipoErro.NaoAutenticado, "Invalid credentials."));
         }
 
         return Result.Ok(emissor.CriarToken(usuario));

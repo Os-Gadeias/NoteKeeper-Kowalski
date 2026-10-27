@@ -30,17 +30,17 @@ public sealed class Categoria
     {
         if (Titulo.Length < TamanhoMinimoTitulo)
         {
-            return [new("titulo", "Título deve ter entre 2 e 100 caracteres.")];
+            return [new("titulo", "Title must be between 2 and 100 characters.")];
         }
 
         if (Titulo.Length > TamanhoMaximoTitulo)
         {
-            return [new("titulo", "Título deve ter entre 2 e 100 caracteres.")];
+            return [new("titulo", "Title must be between 2 and 100 characters.")];
         }
 
         if (Icone.Length == 0 || Icone.Length > TamanhoMaximoIcone)
         {
-            return [new("icone", "Ícone deve ter entre 1 e 100 caracteres.")];
+            return [new("icone", "Icon must be between 1 and 100 characters.")];
         }
 
         return [];
