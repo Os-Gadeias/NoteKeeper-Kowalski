@@ -58,21 +58,7 @@
             <div
               class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-primary/15 bg-primary-muted text-primary"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M20 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2z"
-                />
-              </svg>
+              <i [class]="category.icone"></i>
             </div>
 
             <!-- Category Information -->
@@ -80,10 +66,10 @@
               <h3
                 class="truncate font-heading text-lg font-bold text-text-primary transition-colors group-hover:text-primary-light"
               >
-                {{ category.nome }}
+                {{ category.titulo }}
               </h3>
 
-              <p class="mt-1 text-sm text-text-muted">Personal category</p>
+              <p class="mt-1 text-sm text-text-muted">ID: {{ category.id.slice(0, 8) }}</p>
             </div>
           </div>
 
@@ -102,7 +88,7 @@
               <!-- Edit Button -->
               <button
                 type="button"
-                [attr.aria-label]="'Edit ' + category.nome"
+                [attr.aria-label]="'Edit ' + category.id"
                 title="Edit category"
                 class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-button border border-border bg-background-tertiary text-text-secondary transition-all duration-200 hover:border-primary/40 hover:bg-primary-muted hover:text-primary"
               >
@@ -126,7 +112,7 @@
               <!-- Delete Button -->
               <button
                 type="button"
-                [attr.aria-label]="'Delete ' + category.nome"
+                [attr.aria-label]="'Delete ' + category.id"
                 title="Delete category"
                 class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-button border border-border bg-background-tertiary text-text-secondary transition-all duration-200 hover:border-danger/40 hover:bg-danger/10 hover:text-danger"
               >

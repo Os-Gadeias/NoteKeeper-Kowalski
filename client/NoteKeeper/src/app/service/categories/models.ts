@@ -7,3 +7,9 @@ export interface RegisterCategoryResponse {
   titulo: string;
   icone: string;
 }
+
+export interface ListCategoriesResponse {
+  id: string;
+  titulo: string;
+  icone: string;
+}

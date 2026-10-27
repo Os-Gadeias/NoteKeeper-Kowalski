@@ -1,9 +1,22 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ServiceCategories } from '../../../service/categories/serviceCategories';
+import { map } from 'rxjs';
+import { ListCategoriesResponse } from '../../../service/categories/models';
+import { toSignal } from '@angular/core/rxjs-interop';
 
-interface Category {
+interface CategoryViewModel {
   id: string;
-  nome: string;
+  titulo: string;
+  icone: string;
+}
+
+function toViewModel(model: ListCategoriesResponse[]): CategoryViewModel[] {
+  return model.map((category) => ({
+    id: category.id,
+    titulo: category.titulo,
+    icone: category.icone,
+  }));
 }
 
 @Component({
@@ -13,30 +26,9 @@ interface Category {
   templateUrl: './listCategories.html',
 })
 export class ListCategories {
-  protected readonly categories = signal<Category[]>([
-    {
-      id: '1',
-      nome: 'Personal',
-    },
-    {
-      id: '2',
-      nome: 'Work',
-    },
-    {
-      id: '3',
-      nome: 'Studies',
-    },
-    {
-      id: '4',
-      nome: 'Important',
-    },
-    {
-      id: '5',
-      nome: 'Projects',
-    },
-    {
-      id: '6',
-      nome: 'Ideas',
-    },
-  ]);
+  protected serviceCategories = inject(ServiceCategories);
+
+  protected readonly categories = toSignal(
+    this.serviceCategories.list().pipe(map((list: ListCategoriesResponse[]) => toViewModel(list))),
+  );
 }
