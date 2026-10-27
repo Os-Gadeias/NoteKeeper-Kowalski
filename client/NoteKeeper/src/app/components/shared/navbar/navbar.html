@@ -17,7 +17,7 @@
     <!-- Navigation Links -->
     <div class="hidden items-center gap-2 md:flex">
       <a
-        routerLink="/notes"
+        routerLink="/main"
         routerLinkActive="bg-surface-active text-primary"
         #notesActive="routerLinkActive"
         [class.text-text-secondary]="!notesActive.isActive"
@@ -26,18 +26,6 @@
       >
         My Notes
       </a>
-
-      <a
-        routerLink="/reminders"
-        routerLinkActive="bg-surface-active text-primary"
-        #remindersActive="routerLinkActive"
-        [class.text-text-secondary]="!remindersActive.isActive"
-        ariaCurrentWhenActive="page"
-        class="rounded-button px-4 py-2 text-sm font-medium transition-colors"
-      >
-        Reminders
-      </a>
-
       <a
         routerLink="/categories"
         routerLinkActive="bg-surface-active text-primary"
