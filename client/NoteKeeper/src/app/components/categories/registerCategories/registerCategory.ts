@@ -1,6 +1,6 @@
-import { Component, computed, inject, Inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ServiceCategories } from '../../../service/categories/serviceCategories';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { extractApiError } from '../../../../api/extractApiError';
 
@@ -12,7 +12,7 @@ interface CategoryIcon {
 @Component({
   selector: 'app-registerCategorie',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './registerCategory.html',
 })
 export class RegisterCategory {
@@ -20,7 +20,7 @@ export class RegisterCategory {
 
   constructor(protected router: Router) {}
 
-  protected erroMessage = '';
+  protected errorMessage = signal<string | null>(null);
 
   protected readonly categoryTitle = signal('');
 
@@ -71,6 +71,8 @@ export class RegisterCategory {
   }
 
   protected registerCategory(event: Event): void {
+    this.errorMessage.set(null);
+
     event.preventDefault();
 
     if (!this.isFormValid()) {
@@ -86,10 +88,10 @@ export class RegisterCategory {
 
     this.serviceCategories.register(category).subscribe({
       next: () => {
-        this.router.navigate(['']);
+        this.router.navigate(['/categories']);
       },
       error: (erro: HttpErrorResponse) => {
-        this.erroMessage = extractApiError(erro);
+        this.errorMessage.set(extractApiError(erro));
       },
     });
   }
