@@ -91,12 +91,16 @@
                     type="text"
                     placeholder="Give your note a title..."
                     [formField]="formRegisterNote.titulo"
-
                     class="w-full rounded-input border border-border bg-background-tertiary py-3 pr-4 pl-12 font-body text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
-
                 <p class="text-xs text-text-muted">Choose a short and descriptive title.</p>
+
+                @if (formRegisterNote.titulo().touched() && formRegisterNote.titulo().invalid()) {
+                  <p class="fw-medium text-danger m-0">
+                    {{ formRegisterNote.titulo().errors()[0].message }}
+                  </p>
+                }
               </div>
 
               <!-- DESCRIPTION -->
@@ -114,7 +118,6 @@
                   rows="8"
                   placeholder="Write your thoughts, ideas, reminders..."
                   [formField]="formRegisterNote.descricao"
-
                   class="w-full resize-y rounded-input border border-border bg-background-tertiary px-4 py-4 font-body text-sm leading-relaxed text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/20"
                 ></textarea>
 
@@ -125,6 +128,13 @@
                     {{ noteDescription().length }} characters
                   </span>
                 </div>
+                @if (
+                  formRegisterNote.descricao().touched() && formRegisterNote.descricao().invalid()
+                ) {
+                  <p class="fw-medium text-danger m-0">
+                    {{ formRegisterNote.descricao().errors()[0].message }}
+                  </p>
+                }
               </div>
 
               <!-- CATEGORIES -->
