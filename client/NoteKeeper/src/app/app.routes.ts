@@ -62,4 +62,10 @@ export const routes: Routes = [
         (component) => component.RegisterNotes,
       ),
   },
+  { path: 'deleteNotePage/:id', redirectTo: 'deleteNote/:id' },
+  {
+    path: 'deleteNote/:id',
+    loadComponent: () =>
+      import('./components/notes/deleteNote/deleteNote').then((component) => component.DeleteNote),
+  },
 ];

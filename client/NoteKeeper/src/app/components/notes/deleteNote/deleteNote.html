@@ -1,0 +1,217 @@
+<section class="min-h-[calc(100vh-72px)] bg-background px-4 py-10 md:px-10">
+  <div class="mx-auto max-w-7xl">
+    <!-- PAGE HEADER -->
+    <div class="mb-10">
+      <span
+        class="mb-3 inline-flex items-center gap-2 rounded-full border border-danger/20 bg-danger/10 px-3 py-1 text-xs font-semibold text-danger"
+      >
+        <i class="bi bi-exclamation-triangle"></i>
+        Danger Zone
+      </span>
+
+      <h1 class="font-heading text-3xl font-extrabold text-text-primary md:text-4xl">
+        Delete <span class="text-danger">Note</span>
+      </h1>
+
+      <p class="mt-2 font-body text-sm text-text-secondary md:text-base">
+        Review your note information before confirming its deletion.
+      </p>
+    </div>
+
+    <!-- DELETE CONFIRMATION -->
+    <div class="mx-auto max-w-2xl">
+      <div class="overflow-hidden rounded-card border border-border bg-surface shadow-card">
+        <!-- TOP ACCENT -->
+        <div class="h-1 w-full bg-danger"></div>
+
+        <div class="p-6 sm:p-8 md:p-10">
+          @if (note(); as selectedNote) {
+            <!-- WARNING ICON -->
+            <div class="mb-6 flex justify-center">
+              <div
+                class="flex h-20 w-20 items-center justify-center rounded-2xl border border-danger/20 bg-danger/10 text-danger"
+              >
+                <i class="bi bi-trash3 text-4xl"></i>
+              </div>
+            </div>
+
+            <!-- CONFIRMATION TITLE -->
+            <div class="mb-8 text-center">
+              <h2 class="font-heading text-2xl font-bold text-text-primary">
+                Are you absolutely sure?
+              </h2>
+
+              <p
+                class="mx-auto mt-3 max-w-md font-body text-sm leading-relaxed text-text-secondary"
+              >
+                You are about to permanently delete this note. Please review the information below
+                before continuing.
+              </p>
+            </div>
+
+            <!-- NOTE PREVIEW -->
+            <div class="overflow-hidden rounded-card border border-border bg-note-default">
+              <!-- POST-IT DETAIL -->
+              <div class="h-1 w-full bg-primary/50"></div>
+
+              <div class="p-5 sm:p-6">
+                <!-- NOTE HEADER -->
+                <div class="flex items-start gap-4">
+                  <!-- NOTE TITLE -->
+                  <div class="min-w-0 flex-1">
+                    <p class="mb-1 text-xs font-medium text-text-muted">Selected Note</p>
+
+                    <h3 class="break-words font-heading text-xl font-bold text-text-primary">
+                      {{ selectedNote.titulo }}
+                    </h3>
+
+                    <p class="mt-2 break-all font-body text-xs text-text-muted">
+                      ID: {{ selectedNote.id }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- DIVIDER -->
+                <div class="my-6 border-t border-border"></div>
+
+                <!-- CATEGORIES -->
+                <div>
+                  <div class="mb-3 flex items-center justify-between">
+                    <h4
+                      class="flex items-center gap-2 font-heading text-sm font-semibold text-text-primary"
+                    >
+                      <i class="bi bi-tags text-primary"></i>
+                      Categories
+                    </h4>
+
+                    <span
+                      class="rounded-full border border-primary/20 bg-primary-muted px-3 py-1 text-xs font-semibold text-primary"
+                    >
+                      {{ selectedNote.categorias.length }}
+                    </span>
+                  </div>
+
+                  <!-- CATEGORY BADGES -->
+                  <div class="flex flex-wrap gap-2">
+                    @for (category of selectedNote.categorias; track category.id) {
+                      <span
+                        class="inline-flex items-center gap-2 rounded-full border border-border bg-background-tertiary px-3 py-2 text-xs font-medium text-text-secondary"
+                      >
+                        <i class="bi text-primary" [class]="category.icone"></i>
+
+                        {{ category.titulo }}
+                      </span>
+                    } @empty {
+                      <span
+                        class="inline-flex items-center gap-2 rounded-full border border-border bg-background-tertiary px-3 py-2 text-xs text-text-muted"
+                      >
+                        <i class="bi bi-folder-x"></i>
+                        No categories assigned
+                      </span>
+                    }
+                  </div>
+                </div>
+
+                <!-- DIVIDER -->
+                <div class="my-6 border-t border-border"></div>
+
+                <!-- DATES -->
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <!-- CREATED AT -->
+                  <div class="rounded-input border border-border bg-background-secondary p-4">
+                    <div class="mb-2 flex items-center gap-2">
+                      <i class="bi bi-calendar-plus text-primary"></i>
+
+                      <span class="text-xs font-medium text-text-muted"> Created At </span>
+                    </div>
+
+                    <p class="font-body text-sm font-semibold text-text-primary">
+                      {{ selectedNote.criadoEm | date: 'MMM d, yyyy' }}
+                    </p>
+
+                    <p class="mt-1 text-xs text-text-muted">
+                      {{ selectedNote.criadoEm | date: 'shortTime' }}
+                    </p>
+                  </div>
+
+                  <!-- UPDATED AT -->
+                  <div class="rounded-input border border-border bg-background-secondary p-4">
+                    <div class="mb-2 flex items-center gap-2">
+                      <i class="bi bi-clock-history text-primary"></i>
+
+                      <span class="text-xs font-medium text-text-muted"> Last Updated </span>
+                    </div>
+
+                    <p class="font-body text-sm font-semibold text-text-primary">
+                      {{ selectedNote.atualizadoEm | date: 'MMM d, yyyy' }}
+                    </p>
+
+                    <p class="mt-1 text-xs text-text-muted">
+                      {{ selectedNote.atualizadoEm | date: 'shortTime' }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- WARNING MESSAGE -->
+            <div
+              class="mt-6 flex items-start gap-3 rounded-input border border-danger/20 bg-danger/5 px-4 py-4"
+            >
+              <i class="bi bi-exclamation-circle-fill mt-0.5 text-lg text-danger"></i>
+
+              <div>
+                <h4 class="font-heading text-sm font-bold text-danger">
+                  This action cannot be undone
+                </h4>
+
+                <p class="mt-1 font-body text-xs leading-relaxed text-text-secondary">
+                  Once this note is deleted, it cannot be recovered. Make sure you want to proceed.
+                </p>
+              </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div
+              class="mt-8 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end"
+            >
+              <!-- CANCEL -->
+              <a
+                routerLink="/notes"
+                class="flex cursor-pointer items-center justify-center gap-2 rounded-button border border-border bg-background-tertiary px-6 py-3 font-heading text-sm font-semibold text-text-secondary transition-all duration-200 hover:border-border-hover hover:bg-surface-hover hover:text-text-primary"
+              >
+                <i class="bi bi-arrow-left"></i>
+                Cancel
+              </a>
+
+              <!-- DELETE -->
+              <button
+                type="button"
+                (click)="deleteNote($event)"
+                class="flex cursor-pointer items-center justify-center gap-2 rounded-button bg-danger px-6 py-3 font-heading text-sm font-bold text-white transition-all duration-200 hover:bg-danger/85 hover:shadow-[0_4px_20px_rgba(251,113,133,0.2)]"
+              >
+                <i class="bi bi-trash3"></i>
+                Delete Note
+              </button>
+            </div>
+          } @else {
+            <!-- LOADING STATE -->
+            <div class="flex flex-col items-center justify-center gap-4 py-20">
+              <i class="bi bi-arrow-repeat animate-spin text-4xl text-primary"></i>
+
+              <h3 class="font-heading text-lg font-semibold text-text-primary">Loading Note...</h3>
+
+              <p class="text-sm text-text-secondary">Retrieving note information.</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <p class="mt-6 text-center font-body text-xs text-text-muted">
+        <i class="bi bi-shield-exclamation me-1"></i>
+        Please confirm your decision carefully.
+      </p>
+    </div>
+  </div>
+</section>
