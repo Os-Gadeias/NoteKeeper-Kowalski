@@ -1,6 +1,7 @@
 export interface ListNotesResponse {
   id: string;
   titulo: string;
+  descricao: string | null;
   icone: string;
   categorias: Category[];
   criadoEm: string;

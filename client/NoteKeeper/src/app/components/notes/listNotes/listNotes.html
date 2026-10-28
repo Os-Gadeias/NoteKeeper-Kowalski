@@ -1,147 +1,191 @@
-<section class="min-h-screen bg-background px-5 py-10 md:px-10 lg:px-16">
+﻿<section class="min-h-screen bg-background px-5 py-10 md:px-10 lg:px-16">
   <div class="mx-auto max-w-7xl">
-    <!-- PAGE HEADER -->
     <div class="mb-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <span
           class="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-muted px-3 py-1 text-xs font-semibold text-primary-light"
         >
-          <i class="bi bi-journal-text"></i>
+          <i class="bi bi-journal-text" aria-hidden="true"></i>
           Your Workspace
         </span>
-
         <h1 class="font-heading text-3xl font-extrabold text-text-primary md:text-4xl">
           My <span class="text-primary">Notes</span>
         </h1>
-
         <p class="mt-2 font-body text-sm text-text-secondary md:text-base">
           Capture your thoughts, organize your ideas and keep everything in one place.
         </p>
       </div>
-
-      <!-- CREATE NOTE -->
       <a
-        routerLink="/registerNotesPage"
-        class="flex items-center justify-center gap-2 rounded-button bg-primary px-5 py-3 font-heading text-sm font-bold text-text-inverse shadow-primary transition-all duration-200 hover:bg-primary-hover hover:shadow-card-hover"
+        routerLink="/notes/register"
+        class="inline-flex shrink-0 items-center justify-center gap-2 rounded-button bg-primary px-5 py-3 font-heading text-sm font-bold text-text-inverse shadow-primary transition-all hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
       >
-        <i class="bi bi-plus-lg text-lg"></i>
+        <i class="bi bi-plus-lg text-lg" aria-hidden="true"></i>
         New Note
       </a>
     </div>
 
-    <!-- NOTES COUNT -->
-    <div class="mb-6 flex items-center gap-3">
-      <h2 class="font-heading text-lg font-bold text-text-primary">Your Collection</h2>
-
-      <span
-        class="rounded-full border border-primary/20 bg-primary-muted px-3 py-1 text-xs font-semibold text-primary"
+    @if (isLoading()) {
+      <div
+        role="status"
+        class="flex flex-col items-center gap-4 rounded-card border border-border bg-surface px-6 py-20 text-text-secondary"
       >
-        {{ notes() }} notes
-      </span>
-    </div>
-
-    <!-- NOTES GRID -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      @for (note of notes(); track note.id) {
-        <!-- POST-IT CARD -->
-        <article
-          class="group relative flex min-h-70 flex-col overflow-hidden rounded-card border border-border bg-note-default shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-card-hover"
+        <i class="bi bi-arrow-repeat animate-spin text-3xl text-primary" aria-hidden="true"></i>
+        <p class="text-sm">Loading your notes...</p>
+      </div>
+    } @else if (errorMessage(); as message) {
+      <div
+        role="alert"
+        class="flex items-start gap-3 rounded-input border border-danger/30 bg-danger/10 px-4 py-4 text-sm text-danger"
+      >
+        <i class="bi bi-exclamation-triangle mt-0.5" aria-hidden="true"></i>
+        <p>{{ message }}</p>
+      </div>
+    } @else {
+      <div class="mb-6 flex items-center gap-3">
+        <h2 class="font-heading text-lg font-bold text-text-primary">Your Collection</h2>
+        <span
+          class="rounded-full border border-primary/20 bg-primary-muted px-3 py-1 text-xs font-semibold text-primary"
         >
-          <!-- TOP DETAIL -->
-          <div
-            class="h-1 w-full bg-primary/40 transition-colors duration-300 group-hover:bg-primary"
-          ></div>
+          {{ notes().length }} {{ notes().length === 1 ? 'note' : 'notes' }}
+        </span>
+      </div>
 
-          <div class="flex flex-1 flex-col p-5">
-            <!-- CATEGORY -->
-            <div class="mb-4">
-              <span
-                class="inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-background-tertiary px-3 py-1.5 text-xs font-medium text-text-secondary"
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        @for (note of notes(); track note.id) {
+          <article
+            class="group flex min-w-0 flex-col overflow-hidden rounded-card border border-border bg-note-default shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-card-hover"
+          >
+            <div
+              class="h-1 bg-primary/50"
+              [class.bg-success/50]="note.status === 'Ativa'"
+              [class.bg-warning/50]="note.status === 'Arquivada'"
+            ></div>
+            <div class="flex flex-1 flex-col p-6">
+              <div class="mb-5 flex items-center justify-between gap-3">
+                <div
+                  class="flex h-10 w-10 items-center justify-center rounded-button border border-primary/20 bg-primary-muted text-xl text-primary"
+                >
+                  <i class="bi bi-journal-text" aria-hidden="true"></i>
+                </div>
+                @if (note.status === 'Arquivada') {
+                  <span
+                    class="inline-flex items-center gap-1.5 rounded-full border border-warning/20 bg-warning/10 px-2.5 py-1 text-xs font-semibold text-warning"
+                  >
+                    <i class="bi bi-archive" aria-hidden="true"></i> Archived
+                  </span>
+                } @else {
+                  <span
+                    class="inline-flex items-center gap-1.5 rounded-full border border-success/20 bg-success/10 px-2.5 py-1 text-xs font-semibold text-success"
+                  >
+                    <span class="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true"></span>
+                    Active
+                  </span>
+                }
+              </div>
+
+              <h3
+                class="mb-3 wrap-anywhere font-heading text-xl font-extrabold leading-snug text-text-primary transition-colors group-hover:text-primary-light"
               >
-                <i class="bi shrink-0 text-primary" [class]="note.icone"></i>
+                {{ note.titulo }}
+              </h3>
+              <p
+                class="mb-5 line-clamp-5 min-h-24 whitespace-pre-line wrap-anywhere font-body text-sm leading-relaxed text-text-secondary"
+              >
+                {{ note.descricao || 'No description added.' }}
+              </p>
 
-                <span class="truncate">
-                  {{ note.categorias }}
-                </span>
-              </span>
-            </div>
-
-            <!-- NOTE TITLE -->
-            <h3
-              class="mb-3 font-heading text-lg font-extrabold leading-snug text-text-primary transition-colors duration-200 group-hover:text-primary-light"
-            >
-              {{ note.titulo }}
-            </h3>
-
-            <!-- NOTE CONTENT -->
-            <p
-              class="line-clamp-5 flex-1 whitespace-pre-line font-body text-sm leading-relaxed text-text-secondary"
-            >
-              {{ note.criadoEm }}
-            </p>
-
-            <!-- CARD FOOTER -->
-            <div class="mt-6 flex items-center justify-between gap-3 border-t border-border pt-4">
-              <!-- DATE -->
-              <div class="flex items-center gap-2 text-xs text-text-muted">
-                <i class="bi bi-calendar3"></i>
-
-                <span>
-                  <!-- {{ note.dataCriacao | date: 'MMM d, yyyy' }} -->
-                </span>
+              <div class="mt-auto flex flex-wrap gap-2">
+                @for (category of note.categorias; track category.id) {
+                  <span
+                    class="inline-flex max-w-full items-center gap-1.5 rounded-full border border-primary/15 bg-primary-muted px-2.5 py-1 text-xs font-medium text-primary-light"
+                    [title]="category.titulo"
+                  >
+                    <i
+                      class="bi shrink-0"
+                      [class]="category.icone || 'bi-folder'"
+                      aria-hidden="true"
+                    ></i>
+                    <span class="truncate">{{ category.titulo }}</span>
+                  </span>
+                } @empty {
+                  <span class="inline-flex items-center gap-1.5 py-1 text-xs text-text-muted">
+                    <i class="bi bi-folder" aria-hidden="true"></i> Uncategorized
+                  </span>
+                }
               </div>
 
-              <!-- CRUD BUTTONS -->
-              <div class="flex items-center gap-2">
-                <!-- EDIT -->
-                <a
-                  [routerLink]="['/updateNotePage', note.id]"
-                  [attr.aria-label]="'Edit ' + note.titulo"
-                  title="Edit note"
-                  class="flex h-8 w-8 items-center justify-center rounded-button border border-border bg-background-tertiary text-text-secondary transition-all duration-200 hover:border-primary/40 hover:bg-primary-muted hover:text-primary"
-                >
-                  <i class="bi bi-pencil-square"></i>
-                </a>
-
-                <!-- DELETE -->
-                <a
-                  [routerLink]="['/deleteNotePage', note.id]"
-                  [attr.aria-label]="'Delete ' + note.titulo"
-                  title="Delete note"
-                  class="flex h-8 w-8 items-center justify-center rounded-button border border-border bg-background-tertiary text-text-secondary transition-all duration-200 hover:border-danger/40 hover:bg-danger/10 hover:text-danger"
-                >
-                  <i class="bi bi-trash3"></i>
-                </a>
+              <div
+                class="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-border pt-4"
+              >
+                <div class="space-y-1.5 text-xs text-text-muted">
+                  <p class="flex items-center gap-2">
+                    <i class="bi bi-calendar3 text-primary/70" aria-hidden="true"></i>
+                    <span
+                      >Created
+                      <time
+                        [attr.datetime]="note.criadoEm"
+                        [title]="(note.criadoEm | date: 'MMM d, yyyy, HH:mm') || ''"
+                        >{{ note.criadoEm | date: 'MMM d, yyyy' }}</time
+                      ></span
+                    >
+                  </p>
+                  @if (note.atualizadoEm && note.atualizadoEm !== note.criadoEm) {
+                    <p class="flex items-center gap-2">
+                      <i class="bi bi-clock-history" aria-hidden="true"></i>
+                      <span
+                        >Updated
+                        <time
+                          [attr.datetime]="note.atualizadoEm"
+                          [title]="(note.atualizadoEm | date: 'MMM d, yyyy, HH:mm') || ''"
+                          >{{ note.atualizadoEm | date: 'MMM d, yyyy' }}</time
+                        ></span
+                      >
+                    </p>
+                  }
+                </div>
+                <div class="flex items-center gap-2">
+                  <a
+                    [routerLink]="['/notes/update', note.id]"
+                    [attr.aria-label]="'Edit ' + note.titulo"
+                    title="Edit note"
+                    class="flex h-9 w-9 items-center justify-center rounded-button border border-border bg-background-tertiary text-text-secondary transition-colors hover:border-primary/40 hover:bg-primary-muted hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  >
+                    <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                  </a>
+                  <a
+                    [routerLink]="['/note/delete', note.id]"
+                    [attr.aria-label]="'Delete ' + note.titulo"
+                    title="Delete note"
+                    class="flex h-9 w-9 items-center justify-center rounded-button border border-border bg-background-tertiary text-text-secondary transition-colors hover:border-danger/40 hover:bg-danger/10 hover:text-danger focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-danger"
+                  >
+                    <i class="bi bi-trash3" aria-hidden="true"></i>
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </article>
-      } @empty {
-        <!-- EMPTY STATE -->
-        <div
-          class="col-span-full flex flex-col items-center justify-center rounded-card border border-dashed border-border bg-surface px-6 py-20 text-center"
-        >
+          </article>
+        } @empty {
           <div
-            class="mb-5 flex h-18 w-18 items-center justify-center rounded-2xl bg-primary-muted text-primary"
+            class="col-span-full flex flex-col items-center rounded-card border border-dashed border-border bg-surface px-6 py-20 text-center"
           >
-            <i class="bi bi-sticky-fill text-3xl"></i>
+            <div
+              class="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-muted text-3xl text-primary"
+            >
+              <i class="bi bi-sticky" aria-hidden="true"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-text-primary">No notes yet</h3>
+            <p class="mt-2 max-w-sm text-sm leading-relaxed text-text-secondary">
+              Your collection is empty. Create your first note to start organizing your ideas.
+            </p>
+            <a
+              routerLink="/notes/register"
+              class="mt-6 inline-flex items-center gap-2 rounded-button bg-primary px-5 py-3 font-heading text-sm font-bold text-text-inverse transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+            >
+              <i class="bi bi-plus-lg" aria-hidden="true"></i> Create Note
+            </a>
           </div>
-
-          <h3 class="font-heading text-xl font-bold text-text-primary">No notes yet</h3>
-
-          <p class="mt-2 max-w-sm font-body text-sm leading-relaxed text-text-secondary">
-            Your collection is empty. Create your first note to start organizing your ideas.
-          </p>
-
-          <a
-            routerLink="/notes/create"
-            class="mt-6 flex items-center gap-2 rounded-button bg-primary px-5 py-3 font-heading text-sm font-bold text-text-inverse transition-all duration-200 hover:bg-primary-hover"
-          >
-            <i class="bi bi-plus-lg"></i>
-            Create Note
-          </a>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
   </div>
 </section>
