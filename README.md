@@ -21,6 +21,13 @@ Aplicação web para registrar ideias, organizar anotações por categorias e ge
 
 ---
 
+<a id="exemplo"></a>
+## Exemplo
+
+<p align="center">
+  <img src="gif/notekeeper.gif" alt="Exemplo de uso do NoteKeeper" />
+</p>
+
 <a id="visao-geral"></a>
 ## Visão geral
 
@@ -52,7 +59,7 @@ O projeto integra um frontend Angular a uma API ASP.NET Core com persistência e
 <a id="demonstracao"></a>
 ## Demonstração
 
-O repositório ainda não contém capturas de tela ou GIFs de demonstração. Os espaços abaixo estão preparados para documentar as telas quando esses arquivos forem adicionados:
+O GIF na seção [Exemplo](#exemplo) demonstra o uso da aplicação. Os espaços abaixo estão preparados para documentar as telas quando as capturas forem adicionadas:
 
 | Tela | Conteúdo previsto para a captura | Disponibilidade da imagem |
 | --- | --- | --- |
