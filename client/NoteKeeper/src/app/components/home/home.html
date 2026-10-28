@@ -1,0 +1,357 @@
+<main class="flex flex-1 flex-col overflow-hidden bg-background text-text-primary">
+  <!-- HERO SECTION -->
+  <section
+    class="relative isolate flex flex-1 items-center overflow-hidden px-5 pb-24 pt-20 md:px-10 md:pt-28 lg:px-16 lg:pb-32"
+  >
+    <!-- BACKGROUND DECORATION -->
+    <div
+      class="pointer-events-none absolute -left-40 top-0 -z-10 h-125 w-125 rounded-full bg-primary/10 blur-[130px]"
+    ></div>
+
+    <div
+      class="pointer-events-none absolute -right-40 top-40 -z-10 h-125 w-125 rounded-full bg-primary-active/10 blur-[140px]"
+    ></div>
+
+    <div class="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2 lg:gap-20">
+      <!-- HERO CONTENT -->
+      <div class="relative z-10">
+        <div
+          class="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary-muted/70 px-4 py-2 text-xs font-bold text-primary-light"
+        >
+          <i class="bi bi-stars text-sm"></i>
+          Your ideas deserve a better place
+          <i class="bi bi-arrow-up-right"></i>
+        </div>
+
+        <h1
+          class="max-w-2xl font-heading text-5xl font-extrabold leading-[1.12] tracking-tight text-text-primary sm:text-6xl lg:text-7xl"
+        >
+          Every great idea
+
+          <span
+            class="mt-2 block bg-linear-to-r from-primary-light via-primary to-primary-active bg-clip-text text-transparent"
+          >
+            starts with a note.
+          </span>
+        </h1>
+
+        <p class="mt-7 max-w-xl font-body text-base leading-8 text-text-secondary md:text-lg">
+          Capture your thoughts, organize your ideas, and keep everything that matters in one
+          beautiful workspace. Simple notes, powerful organization, and a little more room for
+          creativity.
+        </p>
+
+        <!-- ACTIONS -->
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <a
+            routerLink="/createUser"
+            class="group inline-flex items-center justify-center gap-3 rounded-button bg-primary px-7 py-4 font-heading text-sm font-extrabold text-text-inverse shadow-primary transition-all duration-300 hover:-translate-y-1 hover:bg-primary-hover hover:shadow-[0_10px_35px_rgba(167,139,250,0.3)]"
+          >
+            Start Taking Notes
+
+            <i
+              class="bi bi-arrow-right text-lg transition-transform duration-300 group-hover:translate-x-1"
+            ></i>
+          </a>
+        </div>
+
+        <!-- BENEFITS -->
+        <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <span class="flex items-center gap-2 text-xs font-semibold text-text-secondary">
+            <i class="bi bi-check-circle-fill text-success"></i>
+            Easy to use
+          </span>
+
+          <span class="flex items-center gap-2 text-xs font-semibold text-text-secondary">
+            <i class="bi bi-check-circle-fill text-success"></i>
+            Personalized categories
+          </span>
+
+          <span class="flex items-center gap-2 text-xs font-semibold text-text-secondary">
+            <i class="bi bi-check-circle-fill text-success"></i>
+            All in one place
+          </span>
+        </div>
+      </div>
+
+      <!-- HERO VISUAL -->
+      <div class="relative mx-auto w-full max-w-145 lg:max-w-none">
+        <!-- BACKGROUND GLOW -->
+        <div
+          class="pointer-events-none absolute inset-0 -z-10 rounded-full bg-primary/15 blur-[100px]"
+        ></div>
+
+        <!-- FLOATING DECORATION -->
+        <div
+          class="pointer-events-none absolute -right-4 top-8 h-28 w-28 rounded-full border border-primary/10 bg-primary/5 blur-2xl"
+        ></div>
+
+        <!-- APP PREVIEW -->
+        <div
+          class="relative overflow-hidden rounded-[24px] border border-border bg-background-secondary shadow-[0_30px_100px_rgba(0,0,0,0.45)]"
+        >
+          <!-- PREVIEW HEADER -->
+          <div
+            class="flex items-center justify-between gap-3 border-b border-border px-5 py-5 sm:px-6"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-muted text-primary"
+              >
+                <i class="bi bi-sticky-fill text-xl"></i>
+              </div>
+
+              <div>
+                <h3 class="font-heading text-sm font-extrabold text-text-primary">My Notes</h3>
+
+                <p class="mt-0.5 text-[11px] text-text-muted">Your personal workspace</p>
+              </div>
+            </div>
+
+            <div
+              class="flex items-center gap-2 rounded-full border border-success/20 bg-success/10 px-3 py-1.5"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-success"></span>
+
+              <span class="text-[10px] font-bold text-success"> Organized </span>
+            </div>
+          </div>
+
+          <!-- PREVIEW CONTENT -->
+          <div class="p-4 sm:p-6">
+            <!-- FILTER PREVIEW -->
+            <div class="mb-5 flex items-center justify-between gap-3">
+              <div
+                class="flex items-center gap-1 rounded-lg border border-border bg-background-tertiary p-1"
+              >
+                <span
+                  class="rounded-md bg-primary px-3 py-1.5 text-[10px] font-bold text-text-inverse"
+                >
+                  All
+                </span>
+
+                <span class="px-2 py-1.5 text-[10px] text-text-muted"> Active </span>
+
+                <span class="px-2 py-1.5 text-[10px] text-text-muted"> Archived </span>
+              </div>
+
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-text-inverse"
+              >
+                <i class="bi bi-plus-lg text-sm"></i>
+              </span>
+            </div>
+
+            <!-- NOTES GRID -->
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <!-- NOTE 1 -->
+              <article
+                class="group flex min-h-70 flex-col overflow-hidden rounded-card border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-card-hover"
+              >
+                <!-- TOP STATUS LINE -->
+                <div class="h-1 w-full bg-success/70"></div>
+
+                <div class="flex flex-1 flex-col p-4">
+                  <!-- ICON + STATUS -->
+                  <div class="mb-5 flex items-center justify-between gap-2">
+                    <div
+                      class="flex h-9 w-9 items-center justify-center rounded-lg border border-primary/20 bg-primary-muted text-primary"
+                    >
+                      <i class="bi bi-journal-text text-base"></i>
+                    </div>
+
+                    <span
+                      class="inline-flex items-center gap-1.5 rounded-full border border-success/20 bg-success/10 px-2.5 py-1 text-[10px] font-bold text-success"
+                    >
+                      <span class="h-1.5 w-1.5 rounded-full bg-success"></span>
+                      Active
+                    </span>
+                  </div>
+
+                  <!-- NOTE CONTENT -->
+                  <h4 class="font-heading text-sm font-extrabold text-text-primary">
+                    Project Ideas
+                  </h4>
+
+                  <p
+                    class="mt-2 line-clamp-3 font-body text-xs leading-relaxed text-text-secondary"
+                  >
+                    Build something meaningful, explore new technologies, and turn creative ideas
+                    into real projects.
+                  </p>
+
+                  <!-- CATEGORY -->
+                  <div class="mt-auto pt-6">
+                    <span
+                      class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary-muted px-2.5 py-1 text-[10px] font-medium text-primary-light"
+                    >
+                      <i class="bi bi-lightbulb"></i>
+                      Ideas
+                    </span>
+                  </div>
+
+                  <!-- FOOTER -->
+                  <div
+                    class="mt-4 flex items-end justify-between gap-2 border-t border-border pt-3"
+                  >
+                    <div class="space-y-1.5">
+                      <p class="flex items-center gap-1.5 text-[10px] text-text-muted">
+                        <i class="bi bi-calendar3"></i>
+                        Created Oct 28, 2026
+                      </p>
+
+                      <p class="flex items-center gap-1.5 text-[10px] text-text-muted">
+                        <i class="bi bi-clock-history"></i>
+                        Updated Oct 28, 2026
+                      </p>
+                    </div>
+
+                    <!-- ACTIONS -->
+                    <div class="flex items-center gap-1.5">
+                      <span
+                        class="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-background-tertiary text-text-secondary"
+                      >
+                        <i class="bi bi-pencil-square text-xs"></i>
+                      </span>
+
+                      <span
+                        class="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-background-tertiary text-text-secondary"
+                      >
+                        <i class="bi bi-trash3 text-xs"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- NOTE 2 -->
+              <article
+                class="group flex min-h-70 flex-col overflow-hidden rounded-card border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-card-hover"
+              >
+                <!-- TOP STATUS LINE -->
+                <div class="h-1 w-full bg-primary/70"></div>
+
+                <div class="flex flex-1 flex-col p-4">
+                  <!-- ICON + STATUS -->
+                  <div class="mb-5 flex items-center justify-between gap-2">
+                    <div
+                      class="flex h-9 w-9 items-center justify-center rounded-lg border border-primary/20 bg-primary-muted text-primary"
+                    >
+                      <i class="bi bi-journal-text text-base"></i>
+                    </div>
+
+                    <span
+                      class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary-muted px-2.5 py-1 text-[10px] font-bold text-primary-light"
+                    >
+                      <i class="bi bi-archive-fill text-[9px]"></i>
+                      Archived
+                    </span>
+                  </div>
+
+                  <!-- NOTE CONTENT -->
+                  <h4 class="font-heading text-sm font-extrabold text-text-primary">
+                    Learning Angular
+                  </h4>
+
+                  <p
+                    class="mt-2 line-clamp-3 font-body text-xs leading-relaxed text-text-secondary"
+                  >
+                    Explore Angular Signals, reactive forms, components, and modern frontend
+                    development.
+                  </p>
+
+                  <!-- CATEGORY -->
+                  <div class="mt-auto flex flex-wrap gap-1.5 pt-6">
+                    <span
+                      class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary-muted px-2.5 py-1 text-[10px] font-medium text-primary-light"
+                    >
+                      <i class="bi bi-book"></i>
+                      Studies
+                    </span>
+
+                    <span
+                      class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary-muted px-2.5 py-1 text-[10px] font-medium text-primary-light"
+                    >
+                      <i class="bi bi-code-slash"></i>
+                      Coding
+                    </span>
+                  </div>
+
+                  <!-- FOOTER -->
+                  <div
+                    class="mt-4 flex items-end justify-between gap-2 border-t border-border pt-3"
+                  >
+                    <div class="space-y-1.5">
+                      <p class="flex items-center gap-1.5 text-[10px] text-text-muted">
+                        <i class="bi bi-calendar3"></i>
+                        Created Oct 20, 2026
+                      </p>
+
+                      <p class="flex items-center gap-1.5 text-[10px] text-text-muted">
+                        <i class="bi bi-clock-history"></i>
+                        Updated Oct 27, 2026
+                      </p>
+                    </div>
+
+                    <!-- ACTIONS -->
+                    <div class="flex items-center gap-1.5">
+                      <span
+                        class="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-background-tertiary text-text-secondary"
+                      >
+                        <i class="bi bi-pencil-square text-xs"></i>
+                      </span>
+
+                      <span
+                        class="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-background-tertiary text-text-secondary"
+                      >
+                        <i class="bi bi-trash3 text-xs"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <!-- PREVIEW FOOTER -->
+            <div class="mt-5 flex items-center justify-between border-t border-border pt-4">
+              <div class="flex items-center gap-2">
+                <span class="h-2 w-2 rounded-full bg-success"></span>
+
+                <span class="text-[11px] text-text-muted"> Your ideas, all in one place. </span>
+              </div>
+
+              <span class="text-[11px] font-semibold text-primary">
+                Notely
+                <i class="bi bi-stars ml-1"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLOATING BADGE -->
+        <div
+          class="absolute -bottom-5 -left-3 flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3 shadow-[0_15px_40px_rgba(0,0,0,0.35)] sm:-left-7"
+        >
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-xl bg-success/10 text-success"
+          >
+            <i class="bi bi-check2-circle text-xl"></i>
+          </div>
+
+          <div>
+            <p class="font-heading text-xs font-bold text-text-primary">Stay organized</p>
+
+            <p class="mt-0.5 text-[11px] text-text-muted">One note at a time</p>
+          </div>
+        </div>
+
+        <!-- FLOATING ICON -->
+        <div
+          class="absolute -right-3 -top-5 flex h-14 w-14 rotate-12 items-center justify-center rounded-2xl border border-primary/30 bg-primary-muted text-primary shadow-primary sm:-right-6"
+        >
+          <i class="bi bi-stars text-2xl"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

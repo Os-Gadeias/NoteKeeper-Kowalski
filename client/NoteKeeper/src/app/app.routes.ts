@@ -122,12 +122,16 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'notes',
+    redirectTo: 'home',
   },
-
+  { path: 'homePage', redirectTo: 'home' },
+  {
+    path: 'home',
+    loadComponent: () => import('./components/home/home').then((component) => component.Home),
+  },
   // NOT FOUND
   {
     path: '**',
-    redirectTo: 'notes',
+    redirectTo: 'home',
   },
 ];
