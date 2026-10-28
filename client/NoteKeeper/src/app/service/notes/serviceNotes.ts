@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { URL_API } from '../../auth/auth.tokens';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ListNotesResponse } from './models';
+import { ListNotesResponse, RegisterNoteRequest } from './models';
 
 @Injectable({
   providedIn: 'root',
@@ -13,5 +13,8 @@ export class ServiceNotes {
 
   list(): Observable<ListNotesResponse[]> {
     return this.http.get<ListNotesResponse[]>(`${this.urlApi}/notas`);
+  }
+  register(request: RegisterNoteRequest) {
+    return this.http.post(`${this.urlApi}/notas`, request);
   }
 }

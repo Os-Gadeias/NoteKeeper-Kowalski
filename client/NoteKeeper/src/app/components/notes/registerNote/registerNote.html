@@ -54,6 +54,25 @@
               </div>
             </div>
 
+            @if (errorMessage(); as message) {
+              <!-- Error Message -->
+              <div
+                role="alert"
+                class="flex mb-3 items-center gap-3 rounded-input border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger transition-all duration-200"
+              >
+                <!-- Error Icon -->
+                <i
+                  class="bi bi-exclamation-triangle inline-flex h-[20px] w-[20px] shrink-0 items-center justify-center text-[20px] leading-none"
+                  aria-hidden="true"
+                ></i>
+
+                <!-- Error Text -->
+                <span class="font-body font-medium leading-relaxed">
+                  {{ message }}
+                </span>
+              </div>
+            }
+
             <form class="flex flex-col gap-8" (submit)="registerNote($event)">
               <!-- TITLE -->
               <div class="flex flex-col gap-2">
@@ -69,12 +88,10 @@
 
                   <input
                     id="noteTitle"
-                    name="titulo"
                     type="text"
                     placeholder="Give your note a title..."
-                    required
-                    [value]="noteTitle()"
-                    (input)="noteTitle.set($any($event.target).value)"
+                    [formField]="formRegisterNote.titulo"
+
                     class="w-full rounded-input border border-border bg-background-tertiary py-3 pr-4 pl-12 font-body text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
@@ -94,12 +111,10 @@
 
                 <textarea
                   id="noteDescription"
-                  name="descricao"
                   rows="8"
                   placeholder="Write your thoughts, ideas, reminders..."
-                  required
-                  [value]="noteDescription()"
-                  (input)="noteDescription.set($any($event.target).value)"
+                  [formField]="formRegisterNote.descricao"
+
                   class="w-full resize-y rounded-input border border-border bg-background-tertiary px-4 py-4 font-body text-sm leading-relaxed text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/20"
                 ></textarea>
 
@@ -143,23 +158,20 @@
                       [class.border-border]="!selectedCategoryIds().includes(category.id)"
                       [class.bg-background-tertiary]="!selectedCategoryIds().includes(category.id)"
                     >
-                      <!-- CATEGORY ICON -->
                       <div
                         class="flex h-11 w-11 shrink-0 items-center justify-center rounded-button bg-surface text-primary"
                       >
                         <i class="bi text-xl" [class]="category.icone"></i>
                       </div>
 
-                      <!-- CATEGORY NAME -->
                       <span
                         class="min-w-0 flex-1 truncate font-heading text-sm font-semibold text-text-primary"
                       >
                         {{ category.titulo }}
                       </span>
 
-                      <!-- CHECKBOX INDICATOR -->
                       <div
-                        class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-all duration-200"
+                        class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border"
                         [class.border-primary]="selectedCategoryIds().includes(category.id)"
                         [class.bg-primary]="selectedCategoryIds().includes(category.id)"
                         [class.border-border-hover]="!selectedCategoryIds().includes(category.id)"

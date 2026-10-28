@@ -12,3 +12,9 @@ interface Category {
   titulo: string;
   icone: string;
 }
+
+export interface RegisterNoteRequest {
+  titulo: string;
+  descricao: string;
+  categoriaIds: string[];
+}
