@@ -97,8 +97,8 @@
                 <p class="text-xs text-text-muted">Choose a short and descriptive title.</p>
 
                 @if (formRegisterNote.titulo().touched() && formRegisterNote.titulo().invalid()) {
-                  <p class="fw-medium text-danger m-0">
-                    {{ formRegisterNote.titulo().errors()[0].message }}
+                  <p class="m-0 text-sm font-medium text-danger">
+                    {{ formRegisterNote.titulo().errors()[0]?.message }}
                   </p>
                 }
               </div>
@@ -131,8 +131,8 @@
                 @if (
                   formRegisterNote.descricao().touched() && formRegisterNote.descricao().invalid()
                 ) {
-                  <p class="fw-medium text-danger m-0">
-                    {{ formRegisterNote.descricao().errors()[0].message }}
+                  <p class="m-0 text-sm font-medium text-danger">
+                    {{ formRegisterNote.descricao().errors()[0]?.message }}
                   </p>
                 }
               </div>

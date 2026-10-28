@@ -51,7 +51,7 @@ export class RegisterNotes {
       message: 'Title must be between 2 and 100 characters.',
     });
     maxLength(model.descricao, 300, {
-      message: 'Description must have less then 300 characteres.',
+      message: 'Description must have at most 300 characters.',
     });
   });
 
@@ -76,6 +76,8 @@ export class RegisterNotes {
     this.errorMessage.set(null);
 
     if (!this.formRegisterNote().valid()) {
+      this.formRegisterNote.titulo().markAsTouched();
+      this.formRegisterNote.descricao().markAsTouched();
       return;
     }
 

@@ -5,6 +5,7 @@ export interface ListNotesResponse {
   categorias: Category[];
   criadoEm: string;
   atualizadoEm: string;
+  status: string;
 }
 
 export interface RegisterNoteRequest {
@@ -21,10 +22,18 @@ export interface GetByIdNoteResponse {
   categorias: Category[];
   criadoEm: string;
   atualizadoEm: string;
+  status: string;
 }
 
 interface Category {
   id: string;
   titulo: string;
   icone: string;
+}
+
+export interface UpdateNoteRequest {
+  titulo: string;
+  descricao: string;
+  categoriaIds: string[];
+  status: string;
 }

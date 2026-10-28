@@ -2,7 +2,12 @@ import { inject, Injectable } from '@angular/core';
 import { URL_API } from '../../auth/auth.tokens';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GetByIdNoteResponse, ListNotesResponse, RegisterNoteRequest } from './models';
+import {
+  GetByIdNoteResponse,
+  ListNotesResponse,
+  RegisterNoteRequest,
+  UpdateNoteRequest,
+} from './models';
 
 @Injectable({
   providedIn: 'root',
@@ -22,5 +27,8 @@ export class ServiceNotes {
   }
   delete(id: string) {
     return this.http.delete(`${this.urlApi}/notas/${id}`);
+  }
+  update(id: string, request: UpdateNoteRequest) {
+    return this.http.put(`${this.urlApi}/notas/${id}`, request);
   }
 }

@@ -4,15 +4,18 @@ import { Router, RouterLink } from '@angular/router';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { map, switchMap } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { form, FormField, required } from '@angular/forms/signals';
+import { form, FormField, maxLength, minLength, required } from '@angular/forms/signals';
 import { ServiceCategories } from '../../../service/categories/serviceCategories';
 import { ListCategoriesResponse } from '../../../service/categories/models';
 import { toViewModelCategory } from '../../util';
+import { HttpErrorResponse } from '@angular/common/http';
+import { extractApiError } from '../../../../api/extractApiError';
 
 interface UpdateNoteViewModel {
   titulo: string;
   descricao: string;
   categorias: string[];
+  status: string;
 }
 
 @Component({
@@ -38,6 +41,7 @@ export class UpdateNote {
           titulo: note.titulo,
           descricao: note.descricao,
           categorias: note.categorias.map((category) => category.id),
+          status: note.status,
         });
       });
     });
@@ -51,11 +55,15 @@ export class UpdateNote {
     titulo: '',
     descricao: '',
     categorias: [],
+    status: '',
   });
 
   protected readonly updateNoteForm = form(this.modelForm, (model) => {
-    required(model.titulo, { message: 'The title is required' });
-    required(model.descricao, { message: 'The description is required' });
+    required(model.titulo, { message: 'Title is required.' });
+    minLength(model.titulo, 2, { message: 'Title must be between 2 and 100 characters.' });
+    maxLength(model.titulo, 100, { message: 'Title must be between 2 and 100 characters.' });
+    required(model.descricao, { message: 'Description is required.' });
+    maxLength(model.descricao, 300, { message: 'Description must have at most 300 characters.' });
   });
 
   protected readonly isSaving = signal(false);
@@ -82,5 +90,31 @@ export class UpdateNote {
           : [...categorias, id],
       );
   }
-  protected updateNote(event: Event) {}
+  protected updateNote(event: Event) {
+    event.preventDefault();
+
+    this.errorMessage.set(null);
+
+    if (!this.updateNoteForm().valid()) {
+      this.updateNoteForm.titulo().markAsTouched();
+      this.updateNoteForm.descricao().markAsTouched();
+      return;
+    }
+
+    const data = {
+      titulo: this.modelForm().titulo.trim(),
+      descricao: this.modelForm().descricao.trim(),
+      categoriaIds: this.modelForm().categorias,
+      status: this.modelForm().status,
+    };
+
+    this.serviceNotes.update(this.id(), data).subscribe({
+      next: () => {
+        this.router.navigate(['notes']);
+      },
+      error: (erro: HttpErrorResponse) => {
+        this.errorMessage.set(extractApiError(erro));
+      },
+    });
+  }
 }
