@@ -36,6 +36,7 @@ export class UpdateCategory {
 
   protected readonly isLoading = signal(true);
   protected readonly isSaving = signal(false);
+  protected readonly loadError = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
 
   protected readonly categoryIcons: CategoryIcon[] = [
@@ -79,6 +80,7 @@ export class UpdateCategory {
       .pipe(
         switchMap((id) => {
           this.isLoading.set(true);
+          this.loadError.set(false);
           this.errorMessage.set(null);
 
           return this.serviceCategories.getById(id);
@@ -95,6 +97,7 @@ export class UpdateCategory {
         },
 
         error: (error: HttpErrorResponse) => {
+          this.loadError.set(true);
           this.errorMessage.set(extractApiError(error));
           this.isLoading.set(false);
         },
@@ -117,6 +120,7 @@ export class UpdateCategory {
       return;
     }
 
+    this.errorMessage.set(null);
     this.isSaving.set(true);
 
     const request = {

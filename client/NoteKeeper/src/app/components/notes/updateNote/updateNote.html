@@ -1,0 +1,463 @@
+<section class="min-h-screen bg-background px-5 py-10 md:px-10 lg:px-16">
+  <div class="mx-auto max-w-7xl">
+    <!-- PAGE HEADER -->
+    <div class="mb-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <span
+          class="mb-3 inline-flex items-center gap-2 rounded-full border border-warning/25 bg-warning/10 px-3 py-1 text-xs font-semibold text-warning"
+        >
+          <i class="bi bi-pencil-square"></i>
+          Edit Mode
+        </span>
+
+        <h1 class="font-heading text-3xl font-extrabold text-text-primary md:text-4xl">
+          Edit <span class="text-warning">Note</span>
+        </h1>
+
+        <p class="mt-2 font-body text-sm text-text-secondary md:text-base">
+          Update your note information and organize your categories.
+        </p>
+      </div>
+
+      <a
+        routerLink="/notes"
+        class="flex items-center justify-center gap-2 rounded-button border border-border bg-surface px-5 py-3 font-heading text-sm font-semibold text-text-secondary transition-all duration-200 hover:border-warning/40 hover:text-warning"
+      >
+        <i class="bi bi-arrow-left"></i>
+        Back to Notes
+      </a>
+    </div>
+
+    @if (note(); as selectedNote) {
+      <!-- MAIN CONTENT -->
+      <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
+        <!-- EDIT FORM -->
+        <div class="lg:col-span-2">
+          <div class="overflow-hidden rounded-card border border-border bg-surface shadow-card">
+            <!-- TOP ACCENT -->
+            <div class="h-1 bg-warning"></div>
+
+            <div class="p-6 sm:p-8">
+              <!-- FORM HEADER -->
+              <div class="mb-8 flex items-center gap-4">
+                <div
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-warning/20 bg-warning/10 text-warning"
+                >
+                  <i class="bi bi-pencil-square text-2xl"></i>
+                </div>
+
+                <div>
+                  <h2 class="font-heading text-xl font-bold text-text-primary">Note Details</h2>
+
+                  <p class="mt-1 text-sm text-text-secondary">
+                    Modify the information of your existing note.
+                  </p>
+                </div>
+              </div>
+
+              @if (errorMessage(); as message) {
+                <!-- Error Message -->
+                <div
+                  role="alert"
+                  class="flex mb-3 items-center gap-3 rounded-input border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger transition-all duration-200"
+                >
+                  <!-- Error Icon -->
+                  <i
+                    class="bi bi-exclamation-triangle inline-flex h-[20px] w-[20px] shrink-0 items-center justify-center text-[20px] leading-none"
+                    aria-hidden="true"
+                  ></i>
+
+                  <!-- Error Text -->
+                  <span class="font-body font-medium leading-relaxed">
+                    {{ message }}
+                  </span>
+                </div>
+              }
+
+              <!-- FORM -->
+              <form class="flex flex-col gap-8" (submit)="updateNote($event)">
+                <!-- TITLE -->
+                <div class="flex flex-col gap-2">
+                  <label
+                    for="noteTitle"
+                    class="font-heading text-sm font-semibold text-text-primary"
+                  >
+                    Note Title
+                    <span class="text-warning">*</span>
+                  </label>
+
+                  <div class="relative">
+                    <i
+                      class="bi bi-type absolute top-1/2 left-4 -translate-y-1/2 text-lg text-text-muted"
+                    ></i>
+
+                    <input
+                      id="noteTitle"
+                      type="text"
+                      placeholder="Give your note a title..."
+                      [formField]="updateNoteForm.titulo"
+                      class="w-full rounded-input border border-border bg-background-tertiary py-3 pr-4 pl-12 font-body text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-warning focus:ring-2 focus:ring-warning/20"
+                    />
+                  </div>
+
+                  @if (updateNoteForm.titulo().touched() && updateNoteForm.titulo().invalid()) {
+                    <p class="m-0 text-sm font-medium text-danger">
+                      {{ updateNoteForm.titulo().errors()[0]?.message }}
+                    </p>
+                  }
+
+                  <p class="text-xs text-text-muted">Choose a short and descriptive title.</p>
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="flex flex-col gap-2">
+                  <label
+                    for="noteDescription"
+                    class="font-heading text-sm font-semibold text-text-primary"
+                  >
+                    Description
+                    <span class="text-warning">*</span>
+                  </label>
+
+                  <textarea
+                    id="noteDescription"
+                    rows="8"
+                    placeholder="Write your thoughts, ideas, reminders..."
+                    [formField]="updateNoteForm.descricao"
+                    class="w-full resize-y rounded-input border border-border bg-background-tertiary px-4 py-4 font-body text-sm leading-relaxed text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted hover:border-border-hover focus:border-warning focus:ring-2 focus:ring-warning/20"
+                  ></textarea>
+
+                  <div class="flex items-center justify-between gap-3">
+                    <p class="text-xs text-text-muted">Update the content of your note.</p>
+
+                    <span class="text-xs text-text-muted">
+                      {{ modelForm().descricao.length }} characters
+                    </span>
+                  </div>
+
+                  @if (
+                    updateNoteForm.descricao().touched() && updateNoteForm.descricao().invalid()
+                  ) {
+                    <p class="m-0 text-sm font-medium text-danger">
+                      {{ updateNoteForm.descricao().errors()[0]?.message }}
+                    </p>
+                  }
+                </div>
+
+                <!-- CATEGORIES -->
+                <div class="flex flex-col gap-4">
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <h3 class="font-heading text-sm font-semibold text-text-primary">
+                        Categories
+                      </h3>
+
+                      <p class="mt-1 text-xs text-text-muted">
+                        Select or remove categories associated with this note.
+                      </p>
+                    </div>
+
+                    <span
+                      class="shrink-0 rounded-full border border-warning/20 bg-warning/10 px-3 py-1 text-xs font-semibold text-warning"
+                    >
+                      {{ modelForm().categorias.length }} selected
+                    </span>
+                  </div>
+
+                  <!-- CATEGORY GRID -->
+                  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    @for (category of categories(); track category.id) {
+                      <button
+                        type="button"
+                        (click)="toggleCategory(category.id)"
+                        [attr.aria-pressed]="modelForm().categorias.includes(category.id)"
+                        class="group flex cursor-pointer items-center gap-3 rounded-input border p-4 text-left transition-all duration-200 hover:border-warning/50"
+                        [class.border-warning]="modelForm().categorias.includes(category.id)"
+                        [class.bg-warning/10]="modelForm().categorias.includes(category.id)"
+                        [class.border-border]="!modelForm().categorias.includes(category.id)"
+                        [class.bg-background-tertiary]="
+                          !modelForm().categorias.includes(category.id)
+                        "
+                      >
+                        <!-- CATEGORY ICON -->
+                        <div
+                          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-button bg-surface text-warning"
+                        >
+                          <i class="bi text-xl" [class]="category.icone"></i>
+                        </div>
+
+                        <!-- CATEGORY NAME -->
+                        <span
+                          class="min-w-0 flex-1 truncate font-heading text-sm font-semibold text-text-primary"
+                        >
+                          {{ category.titulo }}
+                        </span>
+
+                        <!-- CHECK INDICATOR -->
+                        <div
+                          class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-all duration-200"
+                          [class.border-warning]="modelForm().categorias.includes(category.id)"
+                          [class.bg-warning]="modelForm().categorias.includes(category.id)"
+                          [class.border-border-hover]="
+                            !modelForm().categorias.includes(category.id)
+                          "
+                        >
+                          @if (modelForm().categorias.includes(category.id)) {
+                            <i class="bi bi-check text-xs text-text-inverse"></i>
+                          }
+                        </div>
+                      </button>
+                    } @empty {
+                      <div
+                        class="col-span-full flex flex-col items-center justify-center rounded-input border border-dashed border-border bg-background-secondary px-6 py-10 text-center"
+                      >
+                        <i class="bi bi-folder-x text-3xl text-text-muted"></i>
+
+                        <p class="mt-3 font-heading text-sm font-semibold text-text-primary">
+                          No categories available
+                        </p>
+
+                        <p class="mt-1 text-xs text-text-secondary">
+                          Create a category to organize your notes.
+                        </p>
+                      </div>
+                    }
+                  </div>
+                </div>
+                <!-- NOTE STATUS -->
+                <div class="flex flex-col gap-4">
+                  <div>
+                    <h3 class="font-heading text-sm font-semibold text-text-primary">
+                      Note Status
+                      <span class="text-warning">*</span>
+                    </h3>
+
+                    <p class="mt-1 text-xs text-text-muted">
+                      Choose whether this note should remain active or be archived.
+                    </p>
+                  </div>
+
+                  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <!-- ACTIVE -->
+                    <button
+                      type="button"
+                      (click)="updateNoteForm.status().value.set('Ativa')"
+                      [attr.aria-pressed]="modelForm().status === 'Ativa'"
+                      class="group flex cursor-pointer items-center gap-4 rounded-input border p-4 text-left transition-all duration-200 hover:border-warning/50"
+                      [class.border-warning]="modelForm().status === 'Ativa'"
+                      [class.bg-warning/10]="modelForm().status === 'Ativa'"
+                      [class.border-border]="modelForm().status !== 'Ativa'"
+                      [class.bg-background-tertiary]="modelForm().status !== 'Ativa'"
+                    >
+                      <div
+                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-button bg-success/10 text-success"
+                      >
+                        <i class="bi bi-check-circle-fill text-xl"></i>
+                      </div>
+
+                      <div class="min-w-0 flex-1">
+                        <h4 class="font-heading text-sm font-bold text-text-primary">Active</h4>
+
+                        <p class="mt-1 text-xs text-text-muted">
+                          Keep this note in your collection.
+                        </p>
+                      </div>
+
+                      @if (modelForm().status === 'Ativa') {
+                        <i class="bi bi-check-circle-fill text-lg text-warning"></i>
+                      } @else {
+                        <i class="bi bi-circle text-lg text-text-muted"></i>
+                      }
+                    </button>
+
+                    <!-- ARCHIVED -->
+                    <button
+                      type="button"
+                      (click)="updateNoteForm.status().value.set('Arquivada')"
+                      [attr.aria-pressed]="modelForm().status === 'Arquivada'"
+                      class="group flex cursor-pointer items-center gap-4 rounded-input border p-4 text-left transition-all duration-200 hover:border-warning/50"
+                      [class.border-warning]="modelForm().status === 'Arquivada'"
+                      [class.bg-warning/10]="modelForm().status === 'Arquivada'"
+                      [class.border-border]="modelForm().status !== 'Arquivada'"
+                      [class.bg-background-tertiary]="modelForm().status !== 'Arquivada'"
+                    >
+                      <div
+                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-button bg-primary-muted text-primary"
+                      >
+                        <i class="bi bi-archive-fill text-xl"></i>
+                      </div>
+
+                      <div class="min-w-0 flex-1">
+                        <h4 class="font-heading text-sm font-bold text-text-primary">Archived</h4>
+
+                        <p class="mt-1 text-xs text-text-muted">Move this note to your archive.</p>
+                      </div>
+
+                      @if (modelForm().status === 'Arquivada') {
+                        <i class="bi bi-check-circle-fill text-lg text-warning"></i>
+                      } @else {
+                        <i class="bi bi-circle text-lg text-text-muted"></i>
+                      }
+                    </button>
+                  </div>
+                </div>
+
+                <!-- NOTE INFORMATION -->
+                <div
+                  class="grid grid-cols-1 gap-4 rounded-input border border-border bg-background-secondary p-4 sm:grid-cols-2"
+                >
+                  <div>
+                    <p class="mb-2 flex items-center gap-2 text-xs text-text-muted">
+                      <i class="bi bi-calendar-plus text-warning"></i>
+                      Created At
+                    </p>
+
+                    <p class="font-body text-sm font-semibold text-text-primary">
+                      {{ selectedNote.criadoEm | date: 'MMM d, yyyy' }}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p class="mb-2 flex items-center gap-2 text-xs text-text-muted">
+                      <i class="bi bi-clock-history text-warning"></i>
+                      Last Updated
+                    </p>
+
+                    <p class="font-body text-sm font-semibold text-text-primary">
+                      {{ selectedNote.atualizadoEm | date: 'MMM d, yyyy' }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div
+                  class="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end"
+                >
+                  <a
+                    routerLink="/notes"
+                    class="flex items-center justify-center gap-2 rounded-button border border-border bg-background-tertiary px-6 py-3 font-heading text-sm font-semibold text-text-secondary transition-all duration-200 hover:border-border-hover hover:bg-surface-hover hover:text-text-primary"
+                  >
+                    <i class="bi bi-x-lg"></i>
+                    Cancel
+                  </a>
+
+                  <button
+                    type="submit"
+                    [disabled]="isSaving()"
+                    class="flex cursor-pointer items-center justify-center gap-2 rounded-button bg-warning px-6 py-3 font-heading text-sm font-bold text-text-inverse transition-all duration-200 hover:bg-warning/85 hover:shadow-[0_4px_20px_rgba(251,191,36,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    @if (isSaving()) {
+                      <i class="bi bi-arrow-repeat animate-spin"></i>
+                      Saving...
+                    } @else {
+                      <i class="bi bi-check-lg text-lg"></i>
+                      Save Changes
+                    }
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIVE PREVIEW -->
+        <aside class="lg:sticky lg:top-8">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <i class="bi bi-eye text-warning"></i>
+
+              <h3 class="font-heading text-sm font-bold text-text-primary">Live Preview</h3>
+            </div>
+
+            <span
+              class="rounded-full border border-warning/20 bg-warning/10 px-3 py-1 text-xs font-semibold text-warning"
+            >
+              Editing
+            </span>
+          </div>
+
+          <!-- POST-IT PREVIEW -->
+          <div
+            class="group flex min-h-80 flex-col overflow-hidden rounded-card border border-border bg-note-default shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+          >
+            <!-- TOP ACCENT -->
+            <div class="h-1 bg-warning/70"></div>
+
+            <div class="flex flex-1 flex-col p-5">
+              <!-- SELECTED CATEGORIES -->
+              <div class="mb-5 flex flex-wrap gap-2">
+                @for (category of categories(); track category.id) {
+                  @if (modelForm().categorias.includes(category.id)) {
+                    <span
+                      class="inline-flex items-center gap-2 rounded-full border border-border bg-background-tertiary px-3 py-1.5 text-xs font-medium text-text-secondary"
+                    >
+                      <i class="bi text-warning" [class]="category.icone"></i>
+
+                      {{ category.titulo }}
+                    </span>
+                  }
+                }
+
+                @if (modelForm().categorias.length === 0) {
+                  <span
+                    class="rounded-full border border-border bg-background-tertiary px-3 py-1.5 text-xs text-text-muted"
+                  >
+                    No category
+                  </span>
+                }
+              </div>
+
+              <!-- TITLE PREVIEW -->
+              <h3 class="mb-3 break-words font-heading text-lg font-extrabold text-text-primary">
+                {{ modelForm().titulo.trim() || 'Your Note Title' }}
+              </h3>
+
+              <!-- DESCRIPTION PREVIEW -->
+              <p
+                class="flex-1 whitespace-pre-line break-words font-body text-sm leading-relaxed text-text-secondary"
+              >
+                {{ modelForm().descricao.trim() || 'Your note content will appear here...' }}
+              </p>
+
+              <!-- FOOTER -->
+              <div
+                class="mt-6 flex items-center justify-between gap-3 border-t border-border pt-4 text-xs text-text-muted"
+              >
+                <span class="flex items-center gap-2">
+                  <i class="bi bi-pencil-square text-warning"></i>
+                  Editing Note
+                </span>
+
+                <span>
+                  {{ selectedNote.atualizadoEm | date: 'MMM d, yyyy' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="mt-5 flex items-start gap-3 rounded-input border border-warning/20 bg-warning/5 px-4 py-4"
+          >
+            <i class="bi bi-info-circle mt-0.5 text-warning"></i>
+
+            <p class="text-xs leading-relaxed text-text-secondary">
+              Changes made to your note will appear here in real time. Remember to save your changes
+              when you're finished.
+            </p>
+          </div>
+        </aside>
+      </div>
+    } @else {
+      <!-- LOADING -->
+      <div
+        class="flex flex-col items-center justify-center rounded-card border border-border bg-surface px-6 py-24 text-center"
+      >
+        <i class="bi bi-arrow-repeat animate-spin text-4xl text-warning"></i>
+
+        <h3 class="mt-5 font-heading text-lg font-bold text-text-primary">Loading Note...</h3>
+
+        <p class="mt-2 text-sm text-text-secondary">Retrieving your note information.</p>
+      </div>
+    }
+  </div>
+</section>
