@@ -16,6 +16,7 @@ export interface RegisterNoteRequest {
 export interface GetByIdNoteResponse {
   id: string;
   titulo: string;
+  descricao: string;
   icone: string;
   categorias: Category[];
   criadoEm: string;
