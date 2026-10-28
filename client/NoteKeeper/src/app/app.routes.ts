@@ -62,10 +62,16 @@ export const routes: Routes = [
         (component) => component.RegisterNotes,
       ),
   },
-  { path: 'deleteNotePage/:id', redirectTo: 'deleteNote/:id' },
+  { path: 'deleteNotePage/:id', redirectTo: 'note/delete/:id' },
   {
-    path: 'deleteNote/:id',
+    path: 'note/delete/:id',
     loadComponent: () =>
       import('./components/notes/deleteNote/deleteNote').then((component) => component.DeleteNote),
+  },
+  { path: 'updateNotePage/:id', redirectTo: 'notes/update/:id' },
+  {
+    path: 'notes/update/:id',
+    loadComponent: () =>
+      import('./components/notes/updateNote/updateNote').then((component) => component.UpdateNote),
   },
 ];
