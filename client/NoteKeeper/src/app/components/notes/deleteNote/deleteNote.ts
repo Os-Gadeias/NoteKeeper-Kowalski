@@ -4,6 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { extractApiError } from '../../../../api/extractApiError';
 
 @Component({
   selector: 'app-deleteNote',
@@ -28,7 +30,15 @@ export class DeleteNote {
 
   deleteNote(event: Event) {
     event.preventDefault();
+    this.errorMessage.set(null);
 
-    
+    this.serviceNotes.delete(this.id()).subscribe({
+      next: () => {
+        this.router.navigate(['/notes']);
+      },
+      error: (erro: HttpErrorResponse) => {
+        this.errorMessage.set(extractApiError(erro));
+      },
+    });
   }
 }

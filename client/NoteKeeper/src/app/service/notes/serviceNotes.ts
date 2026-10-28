@@ -20,4 +20,7 @@ export class ServiceNotes {
   register(request: RegisterNoteRequest) {
     return this.http.post(`${this.urlApi}/notas`, request);
   }
+  delete(id: string) {
+    return this.http.delete(`${this.urlApi}/notas/${id}`);
+  }
 }

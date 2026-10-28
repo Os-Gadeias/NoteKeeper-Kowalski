@@ -18,6 +18,25 @@
       </p>
     </div>
 
+    @if (errorMessage(); as message) {
+      <!-- Error Message -->
+      <div
+        role="alert"
+        class="flex mb-3 items-center gap-3 rounded-input border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger transition-all duration-200"
+      >
+        <!-- Error Icon -->
+        <i
+          class="bi bi-exclamation-triangle inline-flex h-[20px] w-[20px] shrink-0 items-center justify-center text-[20px] leading-none"
+          aria-hidden="true"
+        ></i>
+
+        <!-- Error Text -->
+        <span class="font-body font-medium leading-relaxed">
+          {{ message }}
+        </span>
+      </div>
+    }
+
     <!-- DELETE CONFIRMATION -->
     <div class="mx-auto max-w-2xl">
       <div class="overflow-hidden rounded-card border border-border bg-surface shadow-card">
