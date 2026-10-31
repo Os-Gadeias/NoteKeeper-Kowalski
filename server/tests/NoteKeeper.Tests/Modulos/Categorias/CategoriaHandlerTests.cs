@@ -1,4 +1,5 @@
 using Moq;
+using NoteKeeper.Dominio.Compartilhado;
 using NoteKeeper.Aplicacao.Modulos.Categorias;
 using NoteKeeper.Dominio.Modulos.Categorias;
 using Xunit;
@@ -232,6 +233,34 @@ public sealed class CategoriaHandlerTests
         // Assert
         Assert.True(result.IsSuccess);
         repositorio.Verify(x => x.ExcluirAsync(categoria, It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ExcluirCategoria_QuandoPossuiNota_RetornaConflitoSemExcluir()
+    {
+        // Arrange
+        var usuarioId = Guid.NewGuid();
+        var categoria = new Categoria(usuarioId, "Trabalho", "bi bi-tag");
+        var repositorio = new Mock<IRepositorioCategoria>();
+        repositorio
+            .Setup(x => x.ObterAsync(categoria.Id, usuarioId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(categoria);
+        repositorio
+            .Setup(x => x.PossuiNotasAsync(categoria.Id, usuarioId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+        var handler = new ExcluirCategoriaCommandHandler(repositorio.Object);
+
+        // Act
+        var result = await handler.Handle(
+            new ExcluirCategoriaCommand(usuarioId, categoria.Id),
+            CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsFailed);
+        var erro = Assert.Single(result.Errors);
+        Assert.Equal(TipoErro.Conflito, erro.Metadata[nameof(TipoErro)]);
+        Assert.Equal("This category is linked to a note and cannot be deleted.", erro.Message);
+        repositorio.Verify(x => x.ExcluirAsync(It.IsAny<Categoria>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]

@@ -19,6 +19,13 @@ public sealed class ExcluirCategoriaCommandHandler(IRepositorioCategoria reposit
             return Result.Fail(Erros.Criar(TipoErro.NaoEncontrado, "Category not found."));
         }
 
+        // Impede a exclusão de categorias que ainda estão vinculadas a notas.
+        if (await repositorio.PossuiNotasAsync(categoria.Id, command.UsuarioId, ct))
+        {
+            return Result.Fail(
+                Erros.Criar(TipoErro.Conflito, "This category is linked to a note and cannot be deleted."));
+        }
+
         await repositorio.ExcluirAsync(categoria, ct);
 
         return Result.Ok();

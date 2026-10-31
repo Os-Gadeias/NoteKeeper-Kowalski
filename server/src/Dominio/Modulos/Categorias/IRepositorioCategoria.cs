@@ -6,6 +6,7 @@ public interface IRepositorioCategoria
     Task ExcluirAsync(Categoria categoria, CancellationToken cancellationToken);
     Task<IReadOnlyList<Categoria>> ListarAsync(Guid usuarioId, CancellationToken cancellationToken);
     Task<Categoria?> ObterAsync(Guid id, Guid usuarioId, CancellationToken cancellationToken);
+    Task<bool> PossuiNotasAsync(Guid id, Guid usuarioId, CancellationToken cancellationToken);
     Task<bool> TituloExisteAsync(
         Guid usuarioId,
         string tituloNormalizado,

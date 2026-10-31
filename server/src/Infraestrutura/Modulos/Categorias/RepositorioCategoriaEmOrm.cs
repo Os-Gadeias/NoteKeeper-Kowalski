@@ -36,6 +36,15 @@ public sealed class RepositorioCategoriaEmOrm(NoteKeeperDbContext db) : IReposit
             .FirstOrDefaultAsync(x => x.Id == id && x.UsuarioId == usuarioId, ct);
     }
 
+    public async Task<bool> PossuiNotasAsync(Guid id, Guid usuarioId, CancellationToken ct)
+    {
+        // Consulta o vínculo no banco sem precisar carregar as notas da categoria.
+        return await db.Categorias.AnyAsync(
+            x => x.Id == id && x.UsuarioId == usuarioId && x.NotasCategorias.Any(),
+            ct
+        );
+    }
+
     public async Task<bool> TituloExisteAsync(
         Guid usuarioId,
         string tituloNormalizado,
