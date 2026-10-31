@@ -59,6 +59,28 @@
         </div>
       </div>
 
+      <div class="flex flex-col gap-2">
+        <div class="relative">
+          <select
+            id="category"
+            (input)="selectByCategory.set($any($event.target).value)"
+            class="w-full cursor-pointer appearance-none rounded-input border border-border bg-background-tertiary px-4 py-3 pr-10 text-sm text-text-primary outline-none transition-all duration-200 hover:border-border-hover focus:border-primary focus:ring-2 focus:ring-primary/15"
+          >
+            <option value="">All Categories</option>
+
+            @for (category of categories(); track category.id) {
+              <option [value]="category.id">
+                {{ category.titulo }}
+              </option>
+            }
+          </select>
+
+          <i
+            class="bi bi-chevron-down pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs text-primary"
+          ></i>
+        </div>
+      </div>
+
       <!-- STATUS OPTIONS -->
       <div
         class="flex w-full items-center gap-1 rounded-button border border-border bg-background-tertiary p-1 sm:w-auto"

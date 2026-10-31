@@ -5,8 +5,11 @@ import { RouterLink } from '@angular/router';
 import { ServiceNotes } from '../../../service/notes/serviceNotes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { extractApiError } from '../../../../api/extractApiError';
-import { catchError, of, tap } from 'rxjs';
+import { catchError, map, of, tap } from 'rxjs';
 import { BaseNgValidationError } from '@angular/forms/signals';
+import { ListCategoriesResponse } from '../../../service/categories/models';
+import { toViewModelCategory } from '../../util';
+import { ServiceCategories } from '../../../service/categories/serviceCategories';
 
 @Component({
   selector: 'app-ListNotes',
@@ -16,9 +19,11 @@ import { BaseNgValidationError } from '@angular/forms/signals';
 })
 export class ListNotes {
   private readonly serviceNotes = inject(ServiceNotes);
+  private readonly serviceCategories = inject(ServiceCategories);
   protected readonly isLoading = signal(true);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly searchTerm = signal('');
+  protected readonly selectByCategory = signal('');
 
   protected readonly selectedStatus = signal<'All' | 'Ativa' | 'Arquivada'>('All');
 
@@ -34,18 +39,29 @@ export class ListNotes {
     { initialValue: [] },
   );
 
+  protected readonly categories = toSignal(
+    this.serviceCategories
+      .list()
+      .pipe(map((list: ListCategoriesResponse[]) => toViewModelCategory(list))),
+  );
+
   //computed é um metodo na qual quando qualquer signal dentro dele tem o valor alterado, ele chama a funcao
   protected readonly filteredNotes = computed(() => {
     const notes = this.notes();
     const status = this.selectedStatus();
     const name = this.searchTerm();
+    const categorySelectedId = this.selectByCategory();
 
-    if (status === 'All') {
-      return notes.filter((note) => note.titulo.toLowerCase().includes(name.toLowerCase()));
-    }
+    return notes.filter((note) => {
+      const matchesName = note.titulo.toLowerCase().includes(name);
 
-    return notes
-      .filter((note) => note.titulo.toLowerCase().includes(name.toLowerCase()))
-      .filter((note) => note.status === status);
+      const matchesStatus = status === 'All' || note.status === status;
+
+      const matchesCategory =
+        categorySelectedId === '' ||
+        note.categorias.some((category) => category.id === categorySelectedId);
+
+      return matchesName && matchesStatus && matchesCategory;
+    });
   });
 }
