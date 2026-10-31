@@ -21,6 +21,33 @@
         </p>
       </div>
 
+      <div
+        class="group flex w-full items-center gap-3 rounded-input border border-border bg-background-tertiary px-4 py-3 transition-all duration-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/15 hover:border-border-hover sm:w-80 lg:w-96"
+      >
+        <!-- SEARCH ICON -->
+        <i
+          class="bi bi-search text-lg text-text-muted transition-colors duration-200 group-focus-within:text-primary"
+        ></i>
+
+        <!-- INPUT -->
+        <input
+          type="search"
+          placeholder="Search your categories..."
+          aria-label="Search categories"
+          autocomplete="off"
+          [value]="searchTerm()"
+          (input)="searchTerm.set($any($event.target).value)"
+          class="w-full min-w-0 bg-transparent font-body text-sm text-text-primary placeholder:text-text-muted outline-none"
+        />
+
+        <!-- SHORTCUT -->
+        <span
+          class="hidden shrink-0 items-center justify-center rounded-md border border-border bg-surface px-2 py-1 text-[10px] font-semibold text-text-muted sm:flex"
+        >
+          <i class="bi bi-search"></i>
+        </span>
+      </div>
+
       <!-- Add Category Button -->
       <a
         routerLink="/registerCategoryPage"
@@ -38,7 +65,7 @@
 
     <!-- CATEGORIES GRID -->
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-      @for (category of categories(); track category.id) {
+      @for (category of filteredCategories(); track category.id) {
         <!-- CATEGORY CARD -->
         <article
           class="group relative flex min-h-52 flex-col justify-between rounded-card border border-border bg-surface p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-surface-hover hover:shadow-card-hover"

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ServiceCategories } from '../../../service/categories/serviceCategories';
 import { map } from 'rxjs';
@@ -15,9 +15,20 @@ import { toViewModelCategory } from '../../util';
 export class ListCategories {
   protected serviceCategories = inject(ServiceCategories);
 
+  protected readonly searchTerm = signal('');
+
   protected readonly categories = toSignal(
     this.serviceCategories
       .list()
       .pipe(map((list: ListCategoriesResponse[]) => toViewModelCategory(list))),
   );
+
+  protected readonly filteredCategories = computed(() => {
+    const name = this.searchTerm();
+    const categoriesFiltered = this.categories();
+
+    return categoriesFiltered?.filter((category) =>
+      category.titulo.toLowerCase().includes(name.toLowerCase()),
+    );
+  });
 }
