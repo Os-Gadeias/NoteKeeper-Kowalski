@@ -22,13 +22,15 @@ Aplicação web para registrar ideias, organizar anotações por categorias e ge
 ---
 
 <a id="exemplo"></a>
+
 ## Exemplo
 
 <p align="center">
-  <img src="gif/notekeeper.gif" alt="Exemplo de uso do NoteKeeper" />
+  <img src="gif/appGif.gif" alt="Exemplo de uso do NoteKeeper" />
 </p>
 
 <a id="visao-geral"></a>
+
 ## Visão geral
 
 O **Notely** oferece um ambiente para guardar ideias e informações pessoais, associar notas a categorias personalizadas e acompanhar seu ciclo de vida entre os estados **Ativa** e **Arquivada**. A interface responsiva com tema escuro reúne autenticação, organização e edição com prévia visual durante o preenchimento.
@@ -36,6 +38,7 @@ O **Notely** oferece um ambiente para guardar ideias e informações pessoais, a
 O projeto integra um frontend Angular a uma API ASP.NET Core com persistência em SQL Server. Cada conta acessa suas próprias notas e categorias. A marca apresentada na interface é Notely; os diretórios, projetos .NET e banco de dados mantêm o nome técnico **NoteKeeper**.
 
 <a id="sumario"></a>
+
 ## Sumário
 
 - [Demonstração](#demonstracao)
@@ -57,56 +60,59 @@ O projeto integra um frontend Angular a uma API ASP.NET Core com persistência e
 - [Autor](#autor)
 
 <a id="demonstracao"></a>
+
 ## Demonstração
 
 O GIF na seção [Exemplo](#exemplo) demonstra o uso da aplicação. Os espaços abaixo estão preparados para documentar as telas quando as capturas forem adicionadas:
 
-| Tela | Conteúdo previsto para a captura | Disponibilidade da imagem |
-| --- | --- | --- |
-| Home | Apresentação do Notely e navegação inicial | A adicionar |
-| Login e cadastro | Formulários de acesso e criação de conta | A adicionar |
-| Listagem de notas | Cartões, categorias e filtros por status | A adicionar |
-| Cadastro e edição de notas | Formulários com prévia reativa | A adicionar |
-| Gerenciamento de categorias | Listagem, edição e seleção de ícones | A adicionar |
+| Tela                        | Conteúdo previsto para a captura           | Disponibilidade da imagem |
+| --------------------------- | ------------------------------------------ | ------------------------- |
+| Home                        | Apresentação do Notely e navegação inicial | A adicionar               |
+| Login e cadastro            | Formulários de acesso e criação de conta   | A adicionar               |
+| Listagem de notas           | Cartões, categorias e filtros por status   | A adicionar               |
+| Cadastro e edição de notas  | Formulários com prévia reativa             | A adicionar               |
+| Gerenciamento de categorias | Listagem, edição e seleção de ícones       | A adicionar               |
 
 <!-- Ao adicionar capturas ao repositório, substituir os espaços acima por imagens com caminhos relativos reais. -->
 
 <a id="funcionalidades"></a>
+
 ## Funcionalidades
 
-| Área | Implementação |
-| --- | --- |
-| Contas | Cadastro com nome, e-mail e senha; login; exibição do usuário; encerramento da sessão. |
-| Autenticação | JWT Bearer, validação no backend e revogação do token no logout. |
-| Notas | Criação, listagem, edição e exclusão; datas de criação e atualização. |
-| Categorias | Criação, listagem, edição e exclusão; personalização por ícones. |
-| Organização | Associação de várias categorias a uma nota, com seleção opcional. |
-| Status | Alteração entre Ativa e Arquivada; filtros Todas, Ativas e Arquivadas na listagem. |
-| Formulários | Validação com Signal Forms e prévia das notas durante cadastro e edição. |
-| Navegação | Páginas carregadas sob demanda e guards nas rotas de autenticação, notas e categorias. |
-| Interface | Tema escuro e layouts responsivos com Tailwind CSS. |
+| Área         | Implementação                                                                          |
+| ------------ | -------------------------------------------------------------------------------------- |
+| Contas       | Cadastro com nome, e-mail e senha; login; exibição do usuário; encerramento da sessão. |
+| Autenticação | JWT Bearer, validação no backend e revogação do token no logout.                       |
+| Notas        | Criação, listagem, edição e exclusão; datas de criação e atualização.                  |
+| Categorias   | Criação, listagem, edição e exclusão; personalização por ícones.                       |
+| Organização  | Associação de várias categorias a uma nota, com seleção opcional.                      |
+| Status       | Alteração entre Ativa e Arquivada; filtros Todas, Ativas e Arquivadas na listagem.     |
+| Formulários  | Validação com Signal Forms e prévia das notas durante cadastro e edição.               |
+| Navegação    | Páginas carregadas sob demanda e guards nas rotas de autenticação, notas e categorias. |
+| Interface    | Tema escuro e layouts responsivos com Tailwind CSS.                                    |
 
 Os nomes de status exibidos na interface incluem textos em inglês; os contratos da API utilizam `Ativa` e `Arquivada`.
 
 <a id="arquitetura"></a>
+
 ## 🏗️ Arquitetura
 
 ### Frontend
 
 A aplicação Angular usa **componentes standalone**, organizados por funcionalidade em `components/`: autenticação, notas, categorias e Home, além da navegação e do rodapé.
 
-| Responsabilidade | Organização |
-| --- | --- |
-| Páginas e interação | Componentes com templates próprios, formulários e estados de carregamento/erro. |
-| Comunicação HTTP | `ServiceAuth`, `ServiceNotes` e `ServiceCategories` encapsulam chamadas com `HttpClient` e retornam Observables tipados. |
+| Responsabilidade         | Organização                                                                                                                                                                      |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Páginas e interação      | Componentes com templates próprios, formulários e estados de carregamento/erro.                                                                                                  |
+| Comunicação HTTP         | `ServiceAuth`, `ServiceNotes` e `ServiceCategories` encapsulam chamadas com `HttpClient` e retornam Observables tipados.                                                         |
 | Contratos e apresentação | Arquivos `models.ts` definem interfaces de requisição/resposta; interfaces locais representam formulários; `CategoryViewModel` e seu mapeamento preparam dados para a interface. |
-| Estado reativo | `signal`, `computed` e `effect` controlam dados de formulário, sessão e estado visual; `computed` deriva a lista filtrada e informações de prévia. |
-| Integração assíncrona | RxJS coordena chamadas e transformações; `toSignal` e `toObservable` conectam Observables ao estado reativo. |
-| Formulários | Signal Forms, de `@angular/forms/signals`, fornece campos, validações e acompanhamento dos valores. |
-| Rotas | Angular Router com `loadComponent`, aliases de redirecionamento e parâmetros vinculados a inputs dos componentes. |
-| Sessão | `ServiceStorage` mantém token e nome em `sessionStorage`; `ProvideUser` expõe o estado de autenticação. |
-| Acesso e requisições | Guards funcionais controlam a navegação; o interceptor adiciona o JWT somente às requisições destinadas à API configurada. |
-| Erros | `src/api/extractApiError.ts` transforma erros HTTP em mensagens para as páginas. |
+| Estado reativo           | `signal`, `computed` e `effect` controlam dados de formulário, sessão e estado visual; `computed` deriva a lista filtrada e informações de prévia.                               |
+| Integração assíncrona    | RxJS coordena chamadas e transformações; `toSignal` e `toObservable` conectam Observables ao estado reativo.                                                                     |
+| Formulários              | Signal Forms, de `@angular/forms/signals`, fornece campos, validações e acompanhamento dos valores.                                                                              |
+| Rotas                    | Angular Router com `loadComponent`, aliases de redirecionamento e parâmetros vinculados a inputs dos componentes.                                                                |
+| Sessão                   | `ServiceStorage` mantém token e nome em `sessionStorage`; `ProvideUser` expõe o estado de autenticação.                                                                          |
+| Acesso e requisições     | Guards funcionais controlam a navegação; o interceptor adiciona o JWT somente às requisições destinadas à API configurada.                                                       |
+| Erros                    | `src/api/extractApiError.ts` transforma erros HTTP em mensagens para as páginas.                                                                                                 |
 
 Essa divisão concentra a renderização e a interação nos componentes, os contratos nas interfaces e a comunicação com o backend nos services.
 
@@ -114,12 +120,12 @@ Essa divisão concentra a renderização e a interação nos componentes, os con
 
 A solução `server/NoteKeeper.slnx` usa **.NET 10** e separa o backend em quatro projetos:
 
-| Projeto | Responsabilidade |
-| --- | --- |
-| `NoteKeeper.Api` | Controllers, contratos HTTP, composição de dependências, JWT, CORS, OpenAPI e tradução de resultados para respostas HTTP. |
-| `NoteKeeper.Aplicacao` | Casos de uso de autenticação, notas e categorias em comandos/consultas e handlers MediatR; DTOs, mapeamentos e resultados com FluentResults. |
-| `NoteKeeper.Dominio` | Entidades, regras de validação, status, interfaces de repositórios e abstrações de autenticação. Não referencia os outros projetos da solução. |
-| `NoteKeeper.Infraestrutura` | Implementações de repositórios, EF Core, configurações de entidades, migrations, Identity e persistência de tokens revogados. |
+| Projeto                     | Responsabilidade                                                                                                                               |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NoteKeeper.Api`            | Controllers, contratos HTTP, composição de dependências, JWT, CORS, OpenAPI e tradução de resultados para respostas HTTP.                      |
+| `NoteKeeper.Aplicacao`      | Casos de uso de autenticação, notas e categorias em comandos/consultas e handlers MediatR; DTOs, mapeamentos e resultados com FluentResults.   |
+| `NoteKeeper.Dominio`        | Entidades, regras de validação, status, interfaces de repositórios e abstrações de autenticação. Não referencia os outros projetos da solução. |
+| `NoteKeeper.Infraestrutura` | Implementações de repositórios, EF Core, configurações de entidades, migrations, Identity e persistência de tokens revogados.                  |
 
 Os controllers delegam operações aos handlers. Estes dependem de interfaces do domínio, implementadas na infraestrutura e registradas por injeção de dependência. Há separação entre comandos e consultas via MediatR, sem bancos distintos para leitura e escrita. Os repositórios abstraem o acesso ao EF Core.
 
@@ -152,6 +158,7 @@ flowchart TD
 O diagrama representa o fluxo de execução. A implementação de persistência é resolvida por injeção de dependência a partir das interfaces do domínio.
 
 <a id="estrutura"></a>
+
 ## 📁 Estrutura do projeto
 
 ```text
@@ -189,50 +196,52 @@ O diagrama representa o fluxo de execução. A implementação de persistência 
 ```
 
 <a id="tecnologias"></a>
+
 ## 🛠️ Tecnologias utilizadas
 
 As versões abaixo são as declaradas em `package.json` e nos arquivos `.csproj`. Os intervalos npm foram preservados; o `package-lock.json` registra a resolução das dependências.
 
 ### Frontend
 
-| Tecnologia | Versão | Uso |
-| --- | --- | --- |
-| Angular e Angular Router | `^22.2.0` | Componentes standalone, navegação e guards. |
-| Angular Signals e Angular Forms | `^22.2.0` | Estado reativo, dados derivados e Signal Forms. |
-| TypeScript | `~6.0.2` | Tipagem dos componentes, services e contratos. |
-| RxJS | `~7.8.0` | Observables e composição de operações assíncronas. |
-| Tailwind CSS | `^4.1.12` | Estilização, tema e responsividade. |
-| Bootstrap Icons | `^1.13.2` | Ícones da interface e das categorias. |
+| Tecnologia                      | Versão    | Uso                                                |
+| ------------------------------- | --------- | -------------------------------------------------- |
+| Angular e Angular Router        | `^22.2.0` | Componentes standalone, navegação e guards.        |
+| Angular Signals e Angular Forms | `^22.2.0` | Estado reativo, dados derivados e Signal Forms.    |
+| TypeScript                      | `~6.0.2`  | Tipagem dos componentes, services e contratos.     |
+| RxJS                            | `~7.8.0`  | Observables e composição de operações assíncronas. |
+| Tailwind CSS                    | `^4.1.12` | Estilização, tema e responsividade.                |
+| Bootstrap Icons                 | `^1.13.2` | Ícones da interface e das categorias.              |
 
 ### Backend e banco de dados
 
-| Tecnologia | Versão | Uso |
-| --- | --- | --- |
-| C# e ASP.NET Core | .NET 10 (`net10.0`) | API HTTP e injeção de dependência. |
-| JWT Bearer e Identity EF Core | `10.0.13` | Validação de tokens e gerenciamento de contas/senhas. |
-| Entity Framework Core SQL Server e Design | `10.0.13` | Repositórios, mapeamentos e migrations. |
-| SQL Server | Versão do servidor não fixada | Persistência relacional. |
-| MediatR | `14.2.0` | Despacho de comandos e consultas para handlers. |
-| FluentResults | `4.0.0` | Resultados e erros dos casos de uso. |
-| ASP.NET Core OpenAPI | `10.0.13` | Documento OpenAPI. |
-| Swagger UI | `10.3.1` | Interface de documentação da API. |
+| Tecnologia                                | Versão                        | Uso                                                   |
+| ----------------------------------------- | ----------------------------- | ----------------------------------------------------- |
+| C# e ASP.NET Core                         | .NET 10 (`net10.0`)           | API HTTP e injeção de dependência.                    |
+| JWT Bearer e Identity EF Core             | `10.0.13`                     | Validação de tokens e gerenciamento de contas/senhas. |
+| Entity Framework Core SQL Server e Design | `10.0.13`                     | Repositórios, mapeamentos e migrations.               |
+| SQL Server                                | Versão do servidor não fixada | Persistência relacional.                              |
+| MediatR                                   | `14.2.0`                      | Despacho de comandos e consultas para handlers.       |
+| FluentResults                             | `4.0.0`                       | Resultados e erros dos casos de uso.                  |
+| ASP.NET Core OpenAPI                      | `10.0.13`                     | Documento OpenAPI.                                    |
+| Swagger UI                                | `10.3.1`                      | Interface de documentação da API.                     |
 
 As regras de validação do domínio são implementadas nas próprias entidades e nos casos de uso; FluentResults transporta seus resultados.
 
 ### Ferramentas de desenvolvimento
 
-| Ferramenta | Versão declarada | Uso |
-| --- | --- | --- |
-| Angular CLI e Build | `^22.2.4` | Servidor de desenvolvimento e compilação. |
-| npm | `11.19.0` | Gerenciador declarado em `packageManager`. |
-| PostCSS / plugin Tailwind | `^8.5.3` / `^4.1.12` | Processamento de estilos. |
-| Prettier | `^3.8.1` | Formatação. |
-| Vitest / jsdom | `^5.0.0` / `^30.0.0` | Ferramentas de testes do frontend. |
-| xUnit / Moq | `2.9.3` / `4.20.72` | Testes unitários e simulação de dependências. |
-| Microsoft.NET.Test.Sdk | `17.13.0` | Execução dos testes .NET. |
-| CLI do EF Core | `10.0.13` | Aplicação de migrations pelo manifesto local. |
+| Ferramenta                | Versão declarada     | Uso                                           |
+| ------------------------- | -------------------- | --------------------------------------------- |
+| Angular CLI e Build       | `^22.2.4`            | Servidor de desenvolvimento e compilação.     |
+| npm                       | `11.19.0`            | Gerenciador declarado em `packageManager`.    |
+| PostCSS / plugin Tailwind | `^8.5.3` / `^4.1.12` | Processamento de estilos.                     |
+| Prettier                  | `^3.8.1`             | Formatação.                                   |
+| Vitest / jsdom            | `^5.0.0` / `^30.0.0` | Ferramentas de testes do frontend.            |
+| xUnit / Moq               | `2.9.3` / `4.20.72`  | Testes unitários e simulação de dependências. |
+| Microsoft.NET.Test.Sdk    | `17.13.0`            | Execução dos testes .NET.                     |
+| CLI do EF Core            | `10.0.13`            | Aplicação de migrations pelo manifesto local. |
 
 <a id="execucao-local"></a>
+
 ## 🚀 Executando o projeto localmente
 
 ### 1. Verifique os pré-requisitos
@@ -280,13 +289,13 @@ A API já possui `UserSecretsId`. A chave JWT não está definida nos arquivos d
 
 `Jwt:Issuer`, `Jwt:Audience` e `Jwt:ExpiresInMinutes` estão definidos em `server/src/Api/appsettings.json`. A validade padrão é de 60 minutos.
 
-| Configuração | Variável de ambiente equivalente |
-| --- | --- |
-| `ConnectionStrings:SqlServer` | `ConnectionStrings__SqlServer` |
-| `Jwt:SigningKey` | `Jwt__SigningKey` |
-| `Jwt:Issuer` | `Jwt__Issuer` |
-| `Jwt:Audience` | `Jwt__Audience` |
-| `Jwt:ExpiresInMinutes` | `Jwt__ExpiresInMinutes` |
+| Configuração                  | Variável de ambiente equivalente |
+| ----------------------------- | -------------------------------- |
+| `ConnectionStrings:SqlServer` | `ConnectionStrings__SqlServer`   |
+| `Jwt:SigningKey`              | `Jwt__SigningKey`                |
+| `Jwt:Issuer`                  | `Jwt__Issuer`                    |
+| `Jwt:Audience`                | `Jwt__Audience`                  |
+| `Jwt:ExpiresInMinutes`        | `Jwt__ExpiresInMinutes`          |
 
 O registro do MediatR também lê `LuckyPenny:LicenseKey`. Quando aplicável ao seu licenciamento, configure sua chave:
 
@@ -321,7 +330,7 @@ A URL da API está em `client/NoteKeeper/src/app/enviroments/enviroment.develolm
 
 ```ts
 export const environment = {
-  urlApi: 'http://localhost:5146',
+  urlApi: "http://localhost:5146",
 };
 ```
 
@@ -335,16 +344,17 @@ npm start
 
 ### 8. Acesse a aplicação
 
-| Serviço | Endereço local |
-| --- | --- |
-| Frontend | http://localhost:4200/ |
-| API | http://localhost:5146 |
-| Swagger UI | http://localhost:5146/swagger |
+| Serviço           | Endereço local                        |
+| ----------------- | ------------------------------------- |
+| Frontend          | http://localhost:4200/                |
+| API               | http://localhost:5146                 |
+| Swagger UI        | http://localhost:5146/swagger         |
 | Documento OpenAPI | http://localhost:5146/openapi/v1.json |
 
 Crie sua conta pela interface. Após o cadastro, o frontend realiza o login automaticamente. Se alterar a origem do frontend, revise as políticas CORS em `server/src/Api/Program.cs` e `Cors:AllowedOrigins`; a origem local atual é `http://localhost:4200`.
 
 <a id="autenticacao"></a>
+
 ## 🔐 Autenticação
 
 1. O cadastro envia nome, e-mail e senha para `POST /auth/cadastro`. O Identity cria a conta e gerencia o hash da senha.
@@ -359,16 +369,17 @@ Crie sua conta pela interface. Após o cadastro, o frontend realiza o login auto
 **Os guards controlam a navegação, mas a segurança dos endpoints é garantida pelo backend.** A presença local de um token não comprova sua validade. Não há fluxo de refresh token; após expirar, é necessário autenticar-se novamente.
 
 <a id="endpoints"></a>
+
 ## 🔌 Endpoints
 
 ### Autenticação
 
-| Método | Endpoint | Autenticação | Descrição |
-| --- | --- | --- | --- |
-| `POST` | `/auth/cadastro` | Pública | Cria uma conta. |
-| `POST` | `/auth/login` | Pública | Autentica e retorna o JWT. |
-| `GET` | `/auth/me` | JWT Bearer | Consulta o usuário autenticado. |
-| `POST` | `/auth/logout` | JWT Bearer | Revoga o token atual. |
+| Método | Endpoint         | Autenticação | Descrição                       |
+| ------ | ---------------- | ------------ | ------------------------------- |
+| `POST` | `/auth/cadastro` | Pública      | Cria uma conta.                 |
+| `POST` | `/auth/login`    | Pública      | Autentica e retorna o JWT.      |
+| `GET`  | `/auth/me`       | JWT Bearer   | Consulta o usuário autenticado. |
+| `POST` | `/auth/logout`   | JWT Bearer   | Revoga o token atual.           |
 
 Exemplo de corpo para cadastro, com dados ilustrativos:
 
@@ -382,13 +393,13 @@ Exemplo de corpo para cadastro, com dados ilustrativos:
 
 ### Notas
 
-| Método | Endpoint | Autenticação | Descrição |
-| --- | --- | --- | --- |
-| `GET` | `/notas` | JWT Bearer | Lista notas da conta; aceita filtro por categorias. |
-| `GET` | `/notas/{id}` | JWT Bearer | Consulta uma nota pelo identificador. |
-| `POST` | `/notas` | JWT Bearer | Cria uma nota inicialmente ativa. |
-| `PUT` | `/notas/{id}` | JWT Bearer | Atualiza conteúdo, status e associações. |
-| `DELETE` | `/notas/{id}` | JWT Bearer | Exclui uma nota. |
+| Método   | Endpoint      | Autenticação | Descrição                                           |
+| -------- | ------------- | ------------ | --------------------------------------------------- |
+| `GET`    | `/notas`      | JWT Bearer   | Lista notas da conta; aceita filtro por categorias. |
+| `GET`    | `/notas/{id}` | JWT Bearer   | Consulta uma nota pelo identificador.               |
+| `POST`   | `/notas`      | JWT Bearer   | Cria uma nota inicialmente ativa.                   |
+| `PUT`    | `/notas/{id}` | JWT Bearer   | Atualiza conteúdo, status e associações.            |
+| `DELETE` | `/notas/{id}` | JWT Bearer   | Exclui uma nota.                                    |
 
 Exemplo de atualização sem categorias:
 
@@ -407,13 +418,13 @@ Na criação, o corpo contém `titulo`, `descricao` e `categoriaIds`; o status i
 
 ### Categorias
 
-| Método | Endpoint | Autenticação | Descrição |
-| --- | --- | --- | --- |
-| `GET` | `/categorias` | JWT Bearer | Lista categorias da conta. |
-| `GET` | `/categorias/{id}` | JWT Bearer | Consulta uma categoria. |
-| `POST` | `/categorias` | JWT Bearer | Cria uma categoria. |
-| `PUT` | `/categorias/{id}` | JWT Bearer | Atualiza título e ícone. |
-| `DELETE` | `/categorias/{id}` | JWT Bearer | Exclui a categoria e preserva suas notas. |
+| Método   | Endpoint           | Autenticação | Descrição                                 |
+| -------- | ------------------ | ------------ | ----------------------------------------- |
+| `GET`    | `/categorias`      | JWT Bearer   | Lista categorias da conta.                |
+| `GET`    | `/categorias/{id}` | JWT Bearer   | Consulta uma categoria.                   |
+| `POST`   | `/categorias`      | JWT Bearer   | Cria uma categoria.                       |
+| `PUT`    | `/categorias/{id}` | JWT Bearer   | Atualiza título e ícone.                  |
+| `DELETE` | `/categorias/{id}` | JWT Bearer   | Exclui a categoria e preserva suas notas. |
 
 Exemplo de criação ou atualização:
 
@@ -427,6 +438,7 @@ Exemplo de criação ou atualização:
 Os contratos HTTP utilizam campos em português. Há exemplos adicionais em [NoteKeeper.Api.http](server/src/Api/NoteKeeper.Api.http). Erros seguem ProblemDetails: validação `400`, autenticação `401`, recurso não encontrado `404`, conflito `409` e erro interno `500`.
 
 <a id="fluxo"></a>
+
 ## Fluxo funcional
 
 ```mermaid
@@ -446,32 +458,34 @@ flowchart LR
 A criação de categorias é opcional: notas podem ser registradas sem associações. Arquivar altera o status da nota; excluí-la remove o registro.
 
 <a id="gerenciamento"></a>
+
 ## Gerenciamento de notas e categorias
 
-| Regra | Comportamento |
-| --- | --- |
-| Títulos | Notas e categorias exigem entre 2 e 100 caracteres. A unicidade é verificada por usuário, com normalização de caixa e remoção de espaços nas extremidades. |
-| Descrição | Até 300 caracteres. A API permite descrição ausente; os formulários atuais do frontend exigem preenchimento. |
-| Categorias | Associação opcional e múltipla. A aplicação verifica se as categorias informadas pertencem ao usuário. |
-| Ícones | Categorias possuem título e ícone; a interface oferece seleção visual de Bootstrap Icons. O domínio aceita um identificador de ícone de 1 a 100 caracteres. |
-| Edição | Atualiza os campos da nota e substitui a lista de categorias. Enviar `categoriaIds: []` remove todas as associações. |
-| Exclusão de categoria | Remove a categoria e seus vínculos, preservando as notas. |
-| Status | Notas começam como `Ativa`; podem mudar para `Arquivada` e voltar a ficar ativas. O arquivamento preserva o conteúdo. |
-| Filtros | Todas apresenta a lista completa; Ativas e Arquivadas selecionam pelo status, no cliente. |
+| Regra                 | Comportamento                                                                                                                                               |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Títulos               | Notas e categorias exigem entre 2 e 100 caracteres. A unicidade é verificada por usuário, com normalização de caixa e remoção de espaços nas extremidades.  |
+| Descrição             | Até 300 caracteres. A API permite descrição ausente; os formulários atuais do frontend exigem preenchimento.                                                |
+| Categorias            | Associação opcional e múltipla. A aplicação verifica se as categorias informadas pertencem ao usuário.                                                      |
+| Ícones                | Categorias possuem título e ícone; a interface oferece seleção visual de Bootstrap Icons. O domínio aceita um identificador de ícone de 1 a 100 caracteres. |
+| Edição                | Atualiza os campos da nota e substitui a lista de categorias. Enviar `categoriaIds: []` remove todas as associações.                                        |
+| Exclusão de categoria | Remove a categoria e seus vínculos, preservando as notas.                                                                                                   |
+| Status                | Notas começam como `Ativa`; podem mudar para `Arquivada` e voltar a ficar ativas. O arquivamento preserva o conteúdo.                                       |
+| Filtros               | Todas apresenta a lista completa; Ativas e Arquivadas selecionam pelo status, no cliente.                                                                   |
 
 Os Signals mantêm os dados dos formulários e a seleção de categorias. Computed Signals derivam título, descrição e seleção para a prévia de cadastro; na listagem, `filteredNotes` combina as notas carregadas com o status selecionado. A edição também renderiza a prévia a partir do estado do formulário, atualizando-a durante o preenchimento.
 
 <a id="testes"></a>
+
 ## 🧪 Testes automatizados
 
 O projeto `server/tests/NoteKeeper.Tests` contém **testes unitários com xUnit e Moq**, voltados ao domínio e à camada de aplicação:
 
-| Módulo | Cenários presentes |
-| --- | --- |
-| Entidades | Validação de títulos, descrição, status e ícones. |
-| Autenticação | Cadastro, credenciais válidas/inválidas, consulta do usuário e revogação de token. |
-| Categorias | Criação, duplicidade, listagem, consulta, atualização, exclusão e validação de ícones. |
-| Notas | Criação com status inicial, duplicidade, categorias de outra conta, filtros, consulta, atualização e exclusão. |
+| Módulo       | Cenários presentes                                                                                             |
+| ------------ | -------------------------------------------------------------------------------------------------------------- |
+| Entidades    | Validação de títulos, descrição, status e ícones.                                                              |
+| Autenticação | Cadastro, credenciais válidas/inválidas, consulta do usuário e revogação de token.                             |
+| Categorias   | Criação, duplicidade, listagem, consulta, atualização, exclusão e validação de ícones.                         |
+| Notas        | Criação com status inicial, duplicidade, categorias de outra conta, filtros, consulta, atualização e exclusão. |
 
 Na raiz do repositório:
 
@@ -488,6 +502,7 @@ npm test
 Esses testes unitários não substituem testes de integração da API com o banco nem testes de navegação completos. Não há percentual de cobertura informado no repositório.
 
 <a id="seguranca"></a>
+
 ## 🛡️ Segurança
 
 - **Contas e senhas:** ASP.NET Core Identity gerencia os hashes e a verificação de senhas. A política exige ao menos oito caracteres, um número e um caractere especial, além de e-mail único.
@@ -502,6 +517,7 @@ Esses testes unitários não substituem testes de integração da API com o banc
 O pipeline inclui redirecionamento HTTPS, mas o perfil local fornecido utiliza HTTP. Certificado e terminação HTTPS precisam ser definidos para um ambiente publicado.
 
 <a id="build"></a>
+
 ## Build e execução
 
 ### Frontend
@@ -527,6 +543,7 @@ dotnet run --project server/src/Api/NoteKeeper.Api.csproj --launch-profile NoteK
 ```
 
 <a id="producao"></a>
+
 ## Ambiente de produção
 
 Não foram identificados URL pública da aplicação, configuração de hospedagem, contêineres ou pipeline de CI/CD versionados. O frontend possui um build de produção, mas o processo de publicação ainda precisa ser definido.
@@ -534,6 +551,7 @@ Não foram identificados URL pública da aplicação, configuração de hospedag
 Para preparar esse ambiente, será necessário configurar a URL pública da API, as origens CORS, a conexão SQL Server, os segredos JWT e o HTTPS. A aplicação das migrations também precisa fazer parte do processo de publicação: a migração automática no código ocorre somente em **Development**. O frontend importa diretamente a configuração atual de `urlApi`, sem substituição por ambiente.
 
 <a id="evolucoes"></a>
+
 ## Possíveis evoluções
 
 As propostas abaixo representam melhorias futuras, separadas das funcionalidades já implementadas:
@@ -548,6 +566,7 @@ As propostas abaixo representam melhorias futuras, separadas das funcionalidades
 - Configurações por ambiente e automação de build/publicação.
 
 <a id="status"></a>
+
 ## Status do projeto
 
 Funcionalidades confirmadas no código:
@@ -567,6 +586,7 @@ Funcionalidades confirmadas no código:
 - [x] Testes unitários de domínio e aplicação no backend.
 
 <a id="autor"></a>
+
 ## Autor
 
 **Thiago Kovalski**

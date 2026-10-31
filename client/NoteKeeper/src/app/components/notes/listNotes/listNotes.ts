@@ -49,7 +49,7 @@ export class ListNotes {
   protected readonly filteredNotes = computed(() => {
     const notes = this.notes();
     const status = this.selectedStatus();
-    const name = this.searchTerm();
+    const name = this.searchTerm().toLowerCase().trim();
     const categorySelectedId = this.selectByCategory();
 
     return notes.filter((note) => {
@@ -61,7 +61,7 @@ export class ListNotes {
         categorySelectedId === '' ||
         note.categorias.some((category) => category.id === categorySelectedId);
 
-      return matchesName && matchesStatus && matchesCategory;
+      return matchesName && matchesStatus && matchesCategory; //essas 3 condições devem ser verdadeira para que a nota seja add na lista
     });
   });
 }
