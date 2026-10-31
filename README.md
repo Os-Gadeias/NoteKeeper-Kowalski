@@ -26,7 +26,7 @@ Aplicação web para registrar ideias, organizar anotações por categorias e ge
 ## Exemplo
 
 <p align="center">
-  <img src="gif/appGif.gif" alt="Exemplo de uso do NoteKeeper" />
+  <img src="gif/appMobile.gif" alt="Exemplo de uso do NoteKeeper" />
 </p>
 
 <a id="visao-geral"></a>
