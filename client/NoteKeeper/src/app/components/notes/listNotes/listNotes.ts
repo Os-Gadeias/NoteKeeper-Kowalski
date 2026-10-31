@@ -6,6 +6,7 @@ import { ServiceNotes } from '../../../service/notes/serviceNotes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { extractApiError } from '../../../../api/extractApiError';
 import { catchError, of, tap } from 'rxjs';
+import { BaseNgValidationError } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-ListNotes',
@@ -17,6 +18,7 @@ export class ListNotes {
   private readonly serviceNotes = inject(ServiceNotes);
   protected readonly isLoading = signal(true);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly searchTerm = signal('');
 
   protected readonly selectedStatus = signal<'All' | 'Ativa' | 'Arquivada'>('All');
 
@@ -32,14 +34,18 @@ export class ListNotes {
     { initialValue: [] },
   );
 
+  //computed é um metodo na qual quando qualquer signal dentro dele tem o valor alterado, ele chama a funcao
   protected readonly filteredNotes = computed(() => {
     const notes = this.notes();
     const status = this.selectedStatus();
+    const name = this.searchTerm();
 
     if (status === 'All') {
-      return notes;
+      return notes.filter((note) => note.titulo.toLowerCase().includes(name.toLowerCase()));
     }
 
-    return notes.filter((note) => note.status === status);
+    return notes
+      .filter((note) => note.titulo.toLowerCase().includes(name.toLowerCase()))
+      .filter((note) => note.status === status);
   });
 }

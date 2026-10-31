@@ -29,17 +29,33 @@
       class="mb-8 flex flex-col gap-4 rounded-card border border-border bg-surface p-4 sm:flex-row sm:items-center sm:justify-between"
     >
       <!-- FILTER TITLE -->
-      <div class="flex items-center gap-3">
+      <div class="flex w-full items-center gap-3 sm:w-auto">
+        <!-- SEARCH BAR -->
         <div
-          class="flex h-10 w-10 items-center justify-center rounded-button bg-primary-muted text-primary"
+          class="group flex w-full items-center gap-3 rounded-input border border-border bg-background-tertiary px-4 py-3 transition-all duration-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/15 hover:border-border-hover sm:w-80 lg:w-96"
         >
-          <i class="bi bi-funnel text-lg"></i>
-        </div>
+          <!-- SEARCH ICON -->
+          <i
+            class="bi bi-search text-lg text-text-muted transition-colors duration-200 group-focus-within:text-primary"
+          ></i>
 
-        <div>
-          <h3 class="font-heading text-sm font-bold text-text-primary">Filter Notes</h3>
+          <!-- INPUT -->
+          <input
+            type="search"
+            placeholder="Search your notes..."
+            aria-label="Search notes"
+            autocomplete="off"
+            [value]="searchTerm()"
+            (input)="searchTerm.set($any($event.target).value)"
+            class="w-full min-w-0 bg-transparent font-body text-sm text-text-primary placeholder:text-text-muted outline-none"
+          />
 
-          <p class="text-xs text-text-muted">Filter your notes by status.</p>
+          <!-- SHORTCUT -->
+          <span
+            class="hidden shrink-0 items-center justify-center rounded-md border border-border bg-surface px-2 py-1 text-[10px] font-semibold text-text-muted sm:flex"
+          >
+            <i class="bi bi-search"></i>
+          </span>
         </div>
       </div>
 
